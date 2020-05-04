@@ -16,7 +16,7 @@ class ApocalypseDeliveriesApp < Sinatra::Application
   end
 
   get '/login' do
-    display_page 'login'
+    display_page 'login', hide_header: true
   end
 
   get '/logout' do
@@ -65,6 +65,8 @@ class ApocalypseDeliveriesApp < Sinatra::Application
   end
 
   def display_page(location, locals = {})
+    @hide_header = locals.delete(:hide_header)
+
     options = {
       layout_options: { views: 'views/layouts' },
       layout: locals.fetch(:layout) { :default },
