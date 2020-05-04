@@ -1,0 +1,23 @@
+#login
+  .container.fixed-vertical-center
+    .mx-auto.text-center
+      %img.logo{src: './images/logo.jpg'}
+      %h2 APOCALYPSE DELIVERIES
+
+    #login-form-content.mt-5.text-center
+      - if @current_user
+        %h2= "You're logged in as #{@current_user}"
+        .row
+          %a.text-center.mx-auto.col-8.mt-3{href: '/'}
+            %button.btn.btn-block.btn-default Home
+          %a.text-center.mx-auto.col-8.mt-3{href: '/logout'}
+            %button.btn.btn-block.btn-danger Log Out
+      - else
+        %form.form-horizontal.mx-auto{action: 'login', method: 'post', role: 'form'}
+          %legend.mx-auto Log in to access your account
+          .form-group
+            %input.form-control{type: 'text', name: 'username', placeholder: 'username'}
+          .form-group
+            %input.form-control{type: 'password', name: 'password', placeholder: 'password'}
+          .form-group
+            %button.btn.btn-block.btn-primary{type: 'submit'} Log In

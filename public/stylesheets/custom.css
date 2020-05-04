@@ -1,0 +1,22 @@
+html, body {
+  overflow: visible;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+nav a:focus {
+  outline: 0;
+}
+
+.fixed-vertical-center {
+  width: 80vw;
+  margin: 6vw auto; /* Will not center vertically and won't work in IE6/7. */
+  left: 0;
+  right: 0;
+}
+
+.hidden {
+  display: none;
+}
