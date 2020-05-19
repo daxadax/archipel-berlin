@@ -6,7 +6,7 @@ require 'json'
 Dotenv.load
 Bundler.require
 
-Dir.glob('./lib/**/*.rb') { |f| require f }
+require './lib/apocalypse_admin.rb'
 require './apocalypse_deliveries_app'
 
 require 'securerandom'
