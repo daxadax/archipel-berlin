@@ -3,9 +3,7 @@ print "Using DATABASE:  #{ENV['DATABASE_URL']}\n\n"
 print "##############################\n"
 
 require 'sequel'
-if Sequel.connect(ENV['DATABASE_URL'], test: true)
-  DATABASE_CONNECTION = Sequel.connect(ENV['DATABASE_URL'])
-end
+DATABASE_CONNECTION = Sequel.connect(ENV['DATABASE_URL'])
 Sequel::Model.plugin :timestamps, update_on_create: true
 Sequel::Model.plugin :update_or_create
 
