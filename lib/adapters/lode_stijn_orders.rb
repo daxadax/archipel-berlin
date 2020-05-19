@@ -1,14 +1,16 @@
 module ApocalypseAdmin
   module Adapters
     class LodeStijnOrders < Adapter
-      RELEVANT_VENDOR = "Lode & Stijn"
+      RELEVANT_VENDOR = "lode & stijn"
 
       def call
         # only packed on thursdays and fridays
         return unless Time.now.thursday? || Time.now.friday?
         return if orders.empty?
 
-        relevant_orders = orders.select { |order| order.items.map(&:vendor).include?(RELEVANT_VENDOR) }
+        relevant_orders = orders.select do |order|
+          order.items.map { |i| i.vendor.downcase }.include?(RELEVANT_VENDOR)
+        end
 
         return if relevant_orders.empty?
 
