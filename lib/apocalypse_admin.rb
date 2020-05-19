@@ -27,12 +27,14 @@ require './lib/commands/generate_reports.rb'
 require './lib/commands/generate_hub_packing_lists.rb'
 require './lib/commands/generate_vendor_distribution.rb'
 require './lib/commands/generate_lode_stijn_orders.rb'
+require './lib/commands/generate_order_summary.rb'
 
 # adapters
 require './lib/adapters/adapter.rb'
 require './lib/adapters/vendor_distribution_documents.rb'
 require './lib/adapters/hub_packing_lists.rb'
 require './lib/adapters/lode_stijn_orders.rb'
+require './lib/adapters/order_summary.rb'
 
 module ApocalypseAdmin
   # There is one zip code that got transferred from NKOLN to XBERG
