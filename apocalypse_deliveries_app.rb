@@ -24,7 +24,10 @@ class ApocalypseDeliveriesApp < Sinatra::Application
 
     ApocalypseAdmin::Models::ShopifyOrder.update_or_create(
       { date: date }, # query attribute to find or create by
-      { csv_string: csv_string } # attributes to set
+      {
+        csv_string: csv_string,
+        uploaded_by: @current_user
+      } # attributes to set
     )
 
     ApocalypseAdmin::Commands::GenerateReports.call(date: date)
