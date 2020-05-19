@@ -13,7 +13,7 @@ class ApocalypseDeliveriesApp < Sinatra::Application
 
   get '/dashboard' do
     @todays_date = Date.today
-    @shopify_orders = ApocalypseAdmin::Models::ShopifyOrder.all
+    @shopify_orders = ApocalypseAdmin::Models::ShopifyOrder.reverse(:date).all
     display_page 'dashboard'
   end
 
