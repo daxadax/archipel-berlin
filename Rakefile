@@ -1,10 +1,5 @@
 require 'rake/testtask'
 
-require 'dotenv'
-Dotenv.load
-
-require './lib/apocalypse_admin'
-
 task :default => :test
 
 Rake::TestTask.new do |t|
@@ -14,9 +9,12 @@ Rake::TestTask.new do |t|
 end
 
 namespace :db do
+  require 'dotenv'
+  Dotenv.load
+
   desc "Drop database for environment in DB_ENV for DB_USER"
   task :drop do
-    DATABASE_CONNECTION.disconnect if DATABASE_CONNECTION
+    # DATABASE_CONNECTION.disconnect if DATABASE_CONNECTION
 
     unless ENV.member?('DB_ENV')
       raise 'Please provide the environment to create for as `ENV[DB_ENV]`'
@@ -31,7 +29,7 @@ namespace :db do
 
   desc "Create database for environment in DB_ENV for DB_USER"
   task :create do
-    DATABASE_CONNECTION.disconnect if DATABASE_CONNECTION
+    # DATABASE_CONNECTION.disconnect if DATABASE_CONNECTION
 
     unless ENV.member?('DB_ENV')
       raise 'Please provide the environment to create for as `ENV[DB_ENV]`'
