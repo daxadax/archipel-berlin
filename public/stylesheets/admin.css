@@ -8,3 +8,14 @@
 #login #login-form-content {
   padding: 5vw;
 }
+
+/* DASHBOARD */
+
+#dashboard form input {
+  margin-bottom: 1em;
+}
+
+#dashboard form input#orders-data {
+  line-height: 43px;
+  color: white;
+}

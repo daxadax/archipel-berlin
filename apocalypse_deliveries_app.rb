@@ -12,7 +12,53 @@ class ApocalypseDeliveriesApp < Sinatra::Application
   end
 
   get '/dashboard' do
+    @todays_date = Date.today
+    @shopify_orders = ApocalypseAdmin::Models::ShopifyOrder.all
     display_page 'dashboard'
+  end
+
+  post '/upload_orders' do
+    tempfile = params['orders_data']['tempfile']
+    csv_string = File.read(tempfile)
+    date = params['filedate']
+
+    ApocalypseAdmin::Models::ShopifyOrder.update_or_create(
+      { date: date }, # query attribute to find or create by
+      { csv_string: csv_string } # attributes to set
+    )
+
+    ApocalypseAdmin::Commands::GenerateReports.call(date: date)
+
+    # messages << "Data is being uploaded..."
+    redirect 'dashboard'
+  end
+
+  get '/download_orders/:date' do
+    date = params['date']
+    csv_string = ApocalypseAdmin::Models::ShopifyOrder.find(date: date).csv_string
+
+    file = Tempfile.new("#{date}.csv")
+    file.write(csv_string)
+    file.rewind
+
+    send_file file, filename: "#{date}.csv", type: 'text/csv', disposition: 'attachment'
+
+    file.close
+    file.unlink
+  end
+
+  get '/download_reports/:date' do
+    date = params['date']
+    archive = ApocalypseAdmin::Models::ShopifyOrder.find(date: date).generated_reports
+
+    file = Tempfile.new("#{date}.zip")
+    file.write(archive)
+    file.rewind
+
+    send_file file, filename: "#{date}.zip", type: 'application/zip', disposition: 'attachment'
+
+    file.close
+    file.unlink
   end
 
   get '/login' do

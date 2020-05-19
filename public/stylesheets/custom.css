@@ -20,3 +20,8 @@ nav a:focus {
 .hidden {
   display: none;
 }
+
+/* overwrite style from darkly.css */
+input[type="date"] {
+  line-height: unset;
+}
