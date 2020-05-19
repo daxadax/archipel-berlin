@@ -1,5 +1,6 @@
 source 'http://www.rubygems.org'
 
+gem 'rake'
 gem 'sinatra'
 gem 'haml'
 gem 'dotenv'
@@ -15,7 +16,6 @@ gem 'rubyzip'
 
 group :development do
   gem 'shotgun'
-  gem 'rake'
   gem 'rack-test'
   gem 'minitest'
 end
