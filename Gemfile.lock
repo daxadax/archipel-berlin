@@ -8,11 +8,14 @@ GEM
     minitest (5.14.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
+    nio4r (2.5.2)
     pdf-core (0.7.0)
     pg (1.2.3)
     prawn (2.2.2)
       pdf-core (~> 0.7.0)
       ttfunk (~> 1.5)
+    puma (4.3.4)
+      nio4r (~> 2.0)
     rack (2.2.2)
     rack-protection (2.0.8.1)
       rack
@@ -42,6 +45,7 @@ DEPENDENCIES
   minitest
   pg
   prawn
+  puma
   rack-test
   rake
   rubyzip
