@@ -15,6 +15,12 @@ module ApocalypseAdmin
         return if relevant_orders.empty?
 
         Prawn::Document.generate("LODE-STIJN_deliveries.pdf") do |pdf|
+          pdf.font_families.update("Arial" => {
+            :normal => "./fonts/arial.ttf",
+            :bold => "./fonts/arial-bold.ttf"
+          })
+          pdf.font 'Arial'
+
           pdf.text "Packing list for LODE-STIJN on #{date}\n\n"
 
           Entities::Orders.new(relevant_orders).by_zip_code.each do |zip_code, orders|

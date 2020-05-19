@@ -17,6 +17,12 @@ module ApocalypseAdmin
           document_path = "./tmp/#{vendor.gsub(' ', '_').upcase}.pdf"
 
           Prawn::Document.generate(document_path) do |pdf|
+            pdf.font_families.update("Arial" => {
+              :normal => "./fonts/arial.ttf",
+              :bold => "./fonts/arial-bold.ttf"
+            })
+            pdf.font 'Arial'
+
             pdf.text "Packing list for #{vendor} on #{date}\n", style: :bold
             pdf.text "#{items.map(&:quantity).sum} total items\n\n"
 

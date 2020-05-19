@@ -17,6 +17,12 @@ module ApocalypseAdmin
           next unless orders_by_type.present?
 
           Prawn::Document.generate("./tmp/#{hub}_#{type}.pdf") do |pdf|
+            pdf.font_families.update("Arial" => {
+              :normal => "./fonts/arial.ttf",
+              :bold => "./fonts/arial-bold.ttf"
+            })
+            pdf.font 'Arial'
+
             pdf.text "#{type} packing list for #{hub} on #{date}\n\n"
 
             orders_by_type.by_zip_code.each do |zip_code, orders|
