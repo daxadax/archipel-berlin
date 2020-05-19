@@ -2,6 +2,9 @@ module ApocalypseAdmin
   module Commands
     class GenerateReports < Command
       def call
+        # ensure target directory is empty
+        FileUtils.rm_f Dir.glob('./tmp/*')
+
         # generate all reports
         Commands::GenerateVendorDistribution.call(date: date)
         Commands::GenerateHubPackingLists.call(date: date)
