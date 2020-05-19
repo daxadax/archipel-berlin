@@ -4,15 +4,16 @@
     %form{action: 'upload_orders', method: 'post', enctype: "multipart/form-data", role: 'form'}
       %fieldset
         .form-group
-          .form-row
-            .col-6
+          .form-row.d-flex.align-items-end
+            .col-5
               %label{ for: "filedate" } Orders for:
               %input#filedate.form-control{ type: 'date', name: "filedate", value: @todays_date }
-            .col-6
+            .col-5
               %label{ for: "ordersData" } Shopify Orders CSV
               %input#orders-data.form-control-file{ type:"file", name: "orders_data", accept: "text/csv", required: true }
 
-        %button.btn.btn-primary{type: 'submit'} Upload
+            .col-2
+              %button.btn.btn-primary{type: 'submit'} Upload
 
   #existing-orders
 

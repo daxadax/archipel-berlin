@@ -11,8 +11,8 @@
 
 /* DASHBOARD */
 
-#dashboard form input {
-  margin-bottom: 1em;
+#dashboard form {
+  margin: 0;
 }
 
 #dashboard form input#orders-data {
