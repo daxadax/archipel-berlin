@@ -50,13 +50,13 @@ namespace :db do
     Sequel.extension :migration
 
     # NOTE: example format:
-    # DB_URL=postgres://{user}:{password}@{hostname}:{port}/{database-name}
-    unless ENV.member?('DB_URL')
-      raise 'Please provide a database as `ENV[DB_URL]`'
+    # DATABASE_URL=postgres://{user}:{password}@{hostname}:{port}/{database-name}
+    unless ENV.member?('DATABASE_URL')
+      raise 'Please provide a database as `ENV[DATABASE_URL]`'
     end
 
     version = ENV['VERSION']
-    database_url = ENV['DB_URL']
+    database_url = ENV['DATABASE_URL']
     migration_dir = File.expand_path('../migrations', __FILE__)
     db = Sequel.connect(database_url)
 
