@@ -7,6 +7,11 @@ module ApocalypseAdmin
         end
       end
 
+      # the orders parsed for a given day will be delivered the next day
+      def report_date
+        @report_date ||= (date + 1).to_s
+      end
+
       private
 
       def raw_data

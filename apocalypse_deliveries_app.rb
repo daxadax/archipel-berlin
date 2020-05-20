@@ -52,13 +52,19 @@ class ApocalypseDeliveriesApp < Sinatra::Application
 
   get '/download_reports/:date' do
     date = params['date']
-    archive = ApocalypseAdmin::Models::ShopifyOrder.find(date: date).generated_reports
+    shopify_order = ApocalypseAdmin::Models::ShopifyOrder.find(date: date)
+    archive = shopify_order.generated_reports
 
-    file = Tempfile.new("#{date}.zip")
+    file = Tempfile.new("#{shopify_order.report_date}.zip")
     file.write(archive)
     file.rewind
 
-    send_file file, filename: "#{date}.zip", type: 'application/zip', disposition: 'attachment'
+    send_file_options = {
+      filename: "#{shopify_order.report_date}.zip",
+      type: 'application/zip',
+      disposition: 'attachment'
+    }
+    send_file(file, send_file_options)
 
     file.close
     file.unlink

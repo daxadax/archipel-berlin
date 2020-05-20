@@ -15,7 +15,7 @@ module ApocalypseAdmin
         Commands::GenerateLodeStijnOrders.call(date: date)
         Commands::GenerateOrderSummary.call(date: date)
 
-        target_path = "./tmp/#{date}.zip"
+        target_path = './tmp/generated_reports.zip'
 
         # zip everything and save it
         Services::ZipFileGenerator.call('./tmp/', target_path)
