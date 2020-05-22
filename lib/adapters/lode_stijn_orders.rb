@@ -5,7 +5,8 @@ module ApocalypseAdmin
 
       def call
         # only packed on thursdays and fridays
-        return unless Time.now.thursday? || Time.now.friday?
+        target_date = Date.parse(date)
+        return unless target_date.thursday? || target_date.friday?
         return if orders.empty?
 
         relevant_orders = orders.select do |order|
@@ -14,7 +15,7 @@ module ApocalypseAdmin
 
         return if relevant_orders.empty?
 
-        Prawn::Document.generate("LODE-STIJN_deliveries.pdf") do |pdf|
+        Prawn::Document.generate("./tmp/LODE-STIJN_deliveries.pdf") do |pdf|
           pdf.font_families.update("Arial" => {
             :normal => "./fonts/arial.ttf",
             :bold => "./fonts/arial-bold.ttf"
