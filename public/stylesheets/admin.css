@@ -19,3 +19,8 @@
   line-height: 43px;
   color: white;
 }
+
+#dashboard table td.actions .icon {
+  cursor: pointer;
+  margin-right: 5px;
+}

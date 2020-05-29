@@ -36,6 +36,11 @@ class ApocalypseDeliveriesApp < Sinatra::Application
     redirect 'dashboard'
   end
 
+  post '/generate_reports' do
+    date = params['date']
+    ApocalypseAdmin::Commands::GenerateReports.call(date: date)
+  end
+
   get '/download_orders/:date' do
     date = params['date']
     csv_string = ApocalypseAdmin::Models::ShopifyOrder.find(date: date).csv_string
