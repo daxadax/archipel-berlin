@@ -22,7 +22,7 @@ class ApocalypseDeliveriesApp < Sinatra::Application
     csv_string = File.read(tempfile)
     date = params['filedate']
 
-    ApocalypseAdmin::Models::ShopifyOrder.update_or_create(
+    order = ApocalypseAdmin::Models::ShopifyOrder.update_or_create(
       { date: date }, # query attribute to find or create by
       {
         csv_string: csv_string,
@@ -30,7 +30,8 @@ class ApocalypseDeliveriesApp < Sinatra::Application
       } # attributes to set
     )
 
-    ApocalypseAdmin::Commands::GenerateReports.call(date: date)
+    # generate reports after create
+    order.generate_reports
 
     # messages << "Data is being uploaded..."
     redirect 'dashboard'
@@ -38,7 +39,7 @@ class ApocalypseDeliveriesApp < Sinatra::Application
 
   post '/generate_reports' do
     date = params['date']
-    ApocalypseAdmin::Commands::GenerateReports.call(date: date)
+    ApocalypseAdmin::Models::ShopifyOrder.find(date: date).generate_reports
   end
 
   get '/download_orders/:date' do

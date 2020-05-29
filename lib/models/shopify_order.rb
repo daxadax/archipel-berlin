@@ -12,6 +12,10 @@ module ApocalypseAdmin
         @report_date ||= (date + 1).to_s
       end
 
+      def generate_reports
+        ApocalypseAdmin::Commands::GenerateReports.call(date: date.to_s)
+      end
+
       private
 
       def raw_data

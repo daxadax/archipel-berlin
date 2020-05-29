@@ -1,5 +1,8 @@
 require 'rake/testtask'
 
+require 'dotenv'
+Dotenv.load
+
 task :default => :test
 
 Rake::TestTask.new do |t|
@@ -8,10 +11,18 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
-namespace :db do
-  require 'dotenv'
-  Dotenv.load
+namespace :app do
+  require './lib/apocalypse_admin.rb'
 
+  desc "Regenerate reports for all existing orders"
+  task :regenerate_all_reports do
+    ApocalypseAdmin::Models::ShopifyOrder.all.each do |order|
+      order.generate_reports
+    end
+  end
+end
+
+namespace :db do
   desc "Drop database for environment in DB_ENV for DB_USER"
   task :drop do
     # DATABASE_CONNECTION.disconnect if DATABASE_CONNECTION
