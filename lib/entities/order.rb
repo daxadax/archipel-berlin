@@ -27,7 +27,12 @@ module ApocalypseAdmin
       end
 
       def phone
-        collect('Phone')
+        collect('Shipping Phone', 'Phone')
+      end
+
+      def formatted_phone
+        digits = phone.split.join.reverse
+        digits.unpack('A4A4A*').join('-').reverse
       end
 
       def address
