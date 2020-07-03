@@ -45,10 +45,11 @@ module ApocalypseAdmin
   XBERG_ZIPCODES = [/109\d{2}/, /12047/].freeze
   NKOLN_ZIPCODES = [/120\d{2}/, /^((?!12047).)*$/].freeze
 
-  ZIP_CODE_MAPPING = {
-    friedrichshain: FHAIN_ZIPCODES,
-    mitte: MITTE_ZIPCODES,
-    kreuzberg: XBERG_ZIPCODES,
-    neukölln: NKOLN_ZIPCODES
+  ROUTE_MAPPING = {
+    albatross_catering: { tag: ['Catering'] },
+    friedrichshain: { zip_code: FHAIN_ZIPCODES },
+    mitte: { zip_code: MITTE_ZIPCODES },
+    kreuzberg: { zip_code: XBERG_ZIPCODES },
+    neukölln: { zip_code: NKOLN_ZIPCODES }
   }
 end

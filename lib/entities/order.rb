@@ -15,7 +15,7 @@ module ApocalypseAdmin
       end
 
       def for_pickup?
-        tags.split(', ').include?('Pickup Order')
+        tags.include?('Pickup Order')
       end
 
       def name
@@ -71,7 +71,7 @@ module ApocalypseAdmin
       end
 
       def tags
-        collect('Tags')
+        @tags ||= collect('Tags').split(', ')
       end
 
       private
@@ -82,12 +82,19 @@ module ApocalypseAdmin
       end
 
       def determine_delivery_route
-        result = ApocalypseAdmin::ZIP_CODE_MAPPING.detect do |route_name, matchers|
-          matchers.any? { |matcher| zip_code.match?(matcher) }
+        result = ApocalypseAdmin::ROUTE_MAPPING.detect do |route_name, matchers|
+          matchers.any? do |property, matchers|
+            case property
+            when :tag
+              matchers.any? { |matcher| tags.include?(matcher) }
+            when :zip_code
+              matchers.any? { |matcher| zip_code.match?(matcher) }
+            end
+          end
         end
 
         if result.nil?
-          print "WARNING: unknown delivery route for zip code #{zip_code}\n"
+          print "WARNING: unknown delivery route for order ##{order_number}\n"
           :outside_delivery_zone
         else
           result.first

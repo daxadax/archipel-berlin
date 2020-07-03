@@ -41,7 +41,7 @@ module ApocalypseAdmin
       private
 
       def routes
-        ApocalypseAdmin::ZIP_CODE_MAPPING.keys
+        ApocalypseAdmin::ROUTE_MAPPING.keys
       end
 
       def write_order(pdf, order, last_order)
