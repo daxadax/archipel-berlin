@@ -9,12 +9,17 @@ module ApocalypseAdmin
         # currently this is passing the date to each command,
         # and each command is looking up the orders for that date.
 
-        # generate all reports
+        ### generate all reports
         Commands::GenerateVendorDistribution.call(date: date)
         Commands::GenerateHubPackingLists.call(date: date)
-        Commands::GenerateLodeStijnOrders.call(date: date)
         Commands::GenerateOrderSummary.call(date: date)
 
+        # NOTE: this is kept only for historical reasons
+        # LODE-STIJN orders are no longer taken
+        Commands::GenerateLodeStijnOrders.call(date: date)
+        #
+
+        ### generate zip file
         target_path = './tmp/generated_reports.zip'
 
         # zip everything and save it
