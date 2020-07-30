@@ -11,6 +11,9 @@ gem 'pg'
 gem 'prawn'
 gem 'rubyzip'
 
+# required to make console run on heroku ¯\_(ツ)_/¯
+gem 'irb', require: false
+
 # google drive
 # gem 'google_drive'
 
