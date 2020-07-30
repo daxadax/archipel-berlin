@@ -47,7 +47,7 @@ module ApocalypseAdmin
       def write_order(pdf, order, last_order)
         pdf.text "#{order.order_number} #{order.name}\n"
         pdf.text order.address + "\n"
-        pdf.text "#{order.formatted_phone}\n" unless order.phone.nil?
+        pdf.text "#{order.phone}\n"
         pdf.text "\n" # spacer
         write_items(pdf, order.items)
         pdf.text "\n#{'-' * 23}" unless last_order
