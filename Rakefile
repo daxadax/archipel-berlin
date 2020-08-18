@@ -12,11 +12,11 @@ Rake::TestTask.new do |t|
 end
 
 namespace :app do
-  require './lib/apocalypse_admin.rb'
+  require './lib/archipel_berlin.rb'
 
   desc "Regenerate reports for all existing orders"
   task :regenerate_all_reports do
-    ApocalypseAdmin::Models::ShopifyOrder.all.each do |order|
+    ArchipelBerlin::Models::ShopifyOrder.all.each do |order|
       order.generate_reports
     end
   end

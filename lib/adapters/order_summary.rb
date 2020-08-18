@@ -1,4 +1,4 @@
-module ApocalypseAdmin
+module ArchipelBerlin
   module Adapters
     class OrderSummary < Adapter
       def call
@@ -38,7 +38,7 @@ module ApocalypseAdmin
           end
         end
 
-        ApocalypseAdmin::Models::ShopifyOrder.find(date: date.to_s).update(
+        ArchipelBerlin::Models::ShopifyOrder.find(date: date.to_s).update(
           order_summary: order_summary.to_json
         )
 

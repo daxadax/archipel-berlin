@@ -1,4 +1,4 @@
-module ApocalypseAdmin
+module ArchipelBerlin
   module Adapters
     class Adapter
       SKIPPED_VENDORS = ['lode & stijn'].freeze
@@ -9,7 +9,7 @@ module ApocalypseAdmin
 
       def initialize(date)
         @date = date
-        @orders = ApocalypseAdmin::Models::ShopifyOrder.find(date: date.to_s).orders
+        @orders = ArchipelBerlin::Models::ShopifyOrder.find(date: date.to_s).orders
       end
 
       def call

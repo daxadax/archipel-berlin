@@ -1,4 +1,4 @@
-module ApocalypseAdmin
+module ArchipelBerlin
   module Commands
     class GenerateLodeStijnOrders < Command
       def call

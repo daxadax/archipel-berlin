@@ -1,4 +1,4 @@
-class ApocalypseDeliveriesApp < Sinatra::Application
+class ArchipelBerlinApp < Sinatra::Application
   enable :sessions
 
   before do
@@ -13,7 +13,7 @@ class ApocalypseDeliveriesApp < Sinatra::Application
 
   get '/dashboard' do
     @todays_date = Date.today
-    @shopify_orders = ApocalypseAdmin::Models::ShopifyOrder.reverse(:date).all
+    @shopify_orders = ArchipelBerlin::Models::ShopifyOrder.reverse(:date).all
     display_page 'dashboard'
   end
 
@@ -22,7 +22,7 @@ class ApocalypseDeliveriesApp < Sinatra::Application
     csv_string = File.read(tempfile)
     date = params['filedate']
 
-    order = ApocalypseAdmin::Models::ShopifyOrder.update_or_create(
+    order = ArchipelBerlin::Models::ShopifyOrder.update_or_create(
       { date: date }, # query attribute to find or create by
       {
         csv_string: csv_string,
@@ -39,12 +39,12 @@ class ApocalypseDeliveriesApp < Sinatra::Application
 
   post '/generate_reports' do
     date = params['date']
-    ApocalypseAdmin::Models::ShopifyOrder.find(date: date).generate_reports
+    ArchipelBerlin::Models::ShopifyOrder.find(date: date).generate_reports
   end
 
   get '/download_orders/:date' do
     date = params['date']
-    csv_string = ApocalypseAdmin::Models::ShopifyOrder.find(date: date).csv_string
+    csv_string = ArchipelBerlin::Models::ShopifyOrder.find(date: date).csv_string
 
     file = Tempfile.new("#{date}.csv")
     file.write(csv_string)
@@ -58,7 +58,7 @@ class ApocalypseDeliveriesApp < Sinatra::Application
 
   get '/download_reports/:date' do
     date = params['date']
-    shopify_order = ApocalypseAdmin::Models::ShopifyOrder.find(date: date)
+    shopify_order = ArchipelBerlin::Models::ShopifyOrder.find(date: date)
     archive = shopify_order.generated_reports
 
     file = Tempfile.new("#{shopify_order.report_date}.zip")

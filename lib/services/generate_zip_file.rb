@@ -12,7 +12,7 @@ require 'zip'
 #   output_file = "/tmp/out.zip"
 #   zf = ZipFileGenerator.new(directory_to_zip, output_file)
 #   zf.write()
-module ApocalypseAdmin
+module ArchipelBerlin
   module Services
     class ZipFileGenerator
       def self.call(input_dir, output_file)

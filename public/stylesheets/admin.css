@@ -3,6 +3,7 @@
 #login img.logo {
   width: 60%;
   margin: auto 10%;
+  filter: invert(100%);
 }
 
 #login #login-form-content {

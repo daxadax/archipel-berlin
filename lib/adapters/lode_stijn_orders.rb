@@ -1,4 +1,4 @@
-module ApocalypseAdmin
+module ArchipelBerlin
   module Adapters
     class LodeStijnOrders < Adapter
       RELEVANT_VENDOR = "lode & stijn"

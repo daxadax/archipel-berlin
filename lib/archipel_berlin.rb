@@ -36,7 +36,7 @@ require './lib/adapters/hub_packing_lists.rb'
 require './lib/adapters/lode_stijn_orders.rb'
 require './lib/adapters/order_summary.rb'
 
-module ApocalypseAdmin
+module ArchipelBerlin
   # There is one zip code that got transferred from NKOLN to XBERG
   # so there is a slightly gross regex fix here for that.
   # If more such fixes are required, this matching system should change

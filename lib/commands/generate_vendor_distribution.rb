@@ -1,4 +1,4 @@
-module ApocalypseAdmin
+module ArchipelBerlin
   module Commands
     class GenerateVendorDistribution < Command
       def call

@@ -1,4 +1,4 @@
-module ApocalypseAdmin
+module ArchipelBerlin
   module Adapters
     class HubPackingLists < Adapter
       REQUIRES_ITEMIZED_DETAILS = ['mash pit', 'rocket wine'].freeze
@@ -41,7 +41,7 @@ module ApocalypseAdmin
       private
 
       def routes
-        ApocalypseAdmin::ROUTE_MAPPING.keys
+        ArchipelBerlin::ROUTE_MAPPING.keys
       end
 
       def write_order(pdf, order, last_order)

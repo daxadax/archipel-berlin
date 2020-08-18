@@ -1,4 +1,4 @@
-module ApocalypseAdmin
+module ArchipelBerlin
   module Adapters
     class VendorDistributionDocuments < Adapter
       def call

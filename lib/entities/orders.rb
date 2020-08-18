@@ -1,4 +1,4 @@
-module ApocalypseAdmin
+module ArchipelBerlin
   module Entities
     class Orders
       AVAILABLE_ORDER_TYPES = %i[delivery pickup]

@@ -1,4 +1,4 @@
-module ApocalypseAdmin
+module ArchipelBerlin
   module Entities
     class Order
       def initialize(data)
@@ -77,7 +77,7 @@ module ApocalypseAdmin
       end
 
       def determine_delivery_route
-        result = ApocalypseAdmin::ROUTE_MAPPING.detect do |route_name, matchers|
+        result = ArchipelBerlin::ROUTE_MAPPING.detect do |route_name, matchers|
           matchers.any? do |property, matchers|
             case property
             when :tag

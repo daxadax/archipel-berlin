@@ -1,4 +1,4 @@
-module ApocalypseAdmin
+module ArchipelBerlin
   module Entities
     class Item
       attr_reader :delivery_route, :order_name

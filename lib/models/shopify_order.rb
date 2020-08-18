@@ -1,9 +1,9 @@
-module ApocalypseAdmin
+module ArchipelBerlin
   module Models
     class ShopifyOrder < ::Sequel::Model
       def orders
         @orders ||= raw_data.group_by { |row| row['Name'] }.map do |order_number, items|
-          ApocalypseAdmin::Entities::Order.new(items)
+          ArchipelBerlin::Entities::Order.new(items)
         end
       end
 
@@ -13,7 +13,7 @@ module ApocalypseAdmin
       end
 
       def generate_reports
-        ApocalypseAdmin::Commands::GenerateReports.call(date: date.to_s)
+        ArchipelBerlin::Commands::GenerateReports.call(date: date.to_s)
       end
 
       private
