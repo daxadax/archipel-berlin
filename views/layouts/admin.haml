@@ -1,14 +1,18 @@
 %html
 %head
-  %title Archipel Berlin
+  %title Archipel Berlin Admin
 
   %link{rel: "stylesheet", type: 'text/css', href: url("stylesheets/bootstrap.min.css")}
+  %link{rel: "stylesheet", type: 'text/css', href: url("stylesheets/darkly-bootstrap.min.css")}
   %link{rel: 'stylesheet', type: 'text/css', href: url('stylesheets/custom.css')}
-  %link{rel: 'stylesheet', type: 'text/css', href: url('stylesheets/apocalypse.css')}
+  %link{rel: 'stylesheet', type: 'text/css', href: url('stylesheets/admin.css')}
 
   %script{src: "https://kit.fontawesome.com/467c6e8217.js", crossorigin: "anonymous"}
 
 %body
+  - unless @hide_header
+    #header
+      = display_partial "layouts/admin/header"
   #content
     .container
       = display_partial 'layouts/alert' if messages.any?
@@ -17,4 +21,4 @@
 %script{src: url('javascripts/jquery-3.4.1.min.js')}
 %script{src: url('javascripts/darkly-bootstrap.min.js')}
 %script{src: url('javascripts/main.js')}
-%script{src: url('javascripts/apocalypse.js')}
+%script{src: url('javascripts/admin.js')}

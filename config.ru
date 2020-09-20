@@ -7,6 +7,7 @@ Dotenv.load
 Bundler.require
 
 require './lib/archipel_berlin.rb'
+require './lib/apocalypse.rb'
 require './archipel_berlin_app'
 
 require 'securerandom'

@@ -2,6 +2,7 @@ source 'http://www.rubygems.org'
 
 gem 'rake'
 gem 'sinatra'
+gem 'sinatra-contrib'
 gem 'haml'
 gem 'dotenv'
 

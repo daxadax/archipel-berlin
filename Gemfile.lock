@@ -1,6 +1,7 @@
 GEM
   remote: http://www.rubygems.org/
   specs:
+    backports (3.18.2)
     dotenv (2.7.5)
     haml (5.1.2)
       temple (>= 0.8.0)
@@ -9,6 +10,7 @@ GEM
     irb (1.2.4)
       reline (>= 0.0.1)
     minitest (5.14.0)
+    multi_json (1.15.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     nio4r (2.5.2)
@@ -37,6 +39,13 @@ GEM
       rack (~> 2.0)
       rack-protection (= 2.0.8.1)
       tilt (~> 2.0)
+    sinatra-contrib (2.0.8.1)
+      backports (>= 2.8.2)
+      multi_json
+      mustermann (~> 1.0)
+      rack-protection (= 2.0.8.1)
+      sinatra (= 2.0.8.1)
+      tilt (~> 2.0)
     temple (0.8.2)
     tilt (2.0.10)
     ttfunk (1.6.2.1)
@@ -58,6 +67,7 @@ DEPENDENCIES
   sequel
   shotgun
   sinatra
+  sinatra-contrib
 
 BUNDLED WITH
    1.16.6

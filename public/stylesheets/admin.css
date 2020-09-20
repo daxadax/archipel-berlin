@@ -12,13 +12,21 @@
 
 /* DASHBOARD */
 
+.nav li {
+  cursor: pointer;
+}
+
 #dashboard form {
   margin: 0;
 }
 
-#dashboard form input#orders-data {
+#dashboard form input#archipel-orders {
   line-height: 43px;
   color: white;
+}
+
+#dashboard table td {
+  vertical-align: middle !important;
 }
 
 #dashboard table td.actions .icon {

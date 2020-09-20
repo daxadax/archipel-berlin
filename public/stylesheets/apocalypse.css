@@ -1,0 +1,54 @@
+html, body {
+  overflow-y: visible;
+  overflow-x: hidden;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+nav a:focus {
+  outline: 0;
+}
+
+.fixed-vertical-center {
+  width: 80vw;
+  margin: 6vw auto; /* Will not center vertically and won't work in IE6/7. */
+  left: 0;
+  right: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+input, input.form-control {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #000000;
+  border-radius: 0px;
+  outline: none;
+}
+
+input.form-control:focus {
+  border: none;
+  border-bottom: 1px solid #000000;
+  outline: none;
+  box-shadow: none;
+}
+
+.form-control:disabled {
+  background-color: unset !important;
+}
+
+input.error {
+  background: url('../images/red-x.png') left no-repeat;
+  background-size: 25px;
+  padding-left: 30px;
+}
+
+.validation-msg {
+  font-size: small;
+  font-weight: 200;
+  padding-top: 2px;
+}

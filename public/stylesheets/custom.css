@@ -21,6 +21,10 @@ nav a:focus {
   display: none;
 }
 
+.upcase {
+  text-transform: uppercase;
+}
+
 /* overwrite style from darkly.css */
 input[type="date"] {
   line-height: unset;

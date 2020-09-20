@@ -1,0 +1,79 @@
+%section.container.mt-5
+  %h2 Apocalypse Deliveries
+  %hr.mb-5
+    %form#form{role: 'form'}
+      %h4
+        Pick up
+        %input#total_weight.text-center{type: "number", name: 'total_weight_in_kg', required: true, min: 0, step: 0.5, value: 0, style: 'width: 100px;'}
+        kg of items from:
+        .validation-msg.hidden
+
+      .row.mt-3.mb-3
+        .col-12.col-lg-6.order-lg-0
+          %input#pickup-contact.form-control{type: "text", name: 'pickup_contact', required: true, placeholder: 'Contact name'}
+          .validation-msg.hidden
+        .col-12.col-lg-6.order-lg-0
+          %input#pickup-phone.form-control{type: "tel", name: 'pickup_phone', required: true, placeholder: 'Phone number'}
+          .validation-msg.hidden
+
+      .row.mb-5
+        .col-12.col-lg-3.order-lg-0
+          %input#pickup-name.form-control{type: "text", name: 'pickup_business', required: true, placeholder: 'Business name'}
+          .validation-msg.hidden
+        .col-12.col-lg-3.order-lg-0
+          %input#pickup-address.form-control{type: "text", name: 'pickup_address', required: true, placeholder: 'Address'}
+          .validation-msg.hidden
+        .col-12.col-lg-3.order-lg-0
+          %input#pickup-zip.form-control{data: {serviceArea: pickup_zipcodes}, type: "text", name: 'pickup_zip', required: true, placeholder: 'Zipcode'}
+          .validation-msg.hidden
+        .col-12.col-lg-3.order-lg-0
+          %input#pickup-city.form-control{type: "text", name: 'pickup_city', required: true, value: 'Berlin', readonly: 'readonly'}
+          .validation-msg.hidden
+
+      #dropoff-locations
+        %h4 Drop off at:
+        .dropoff-location-rows
+          .row.dropoff-location.mt-3
+            .col-12.col-lg-3.order-lg-0
+              %input.dropoff-name.form-control{type: "text", name: 'dropoff_business_0', required: true, placeholder: 'Name'}
+              .validation-msg.hidden
+            .col-12.col-lg-3.order-lg-0
+              %input.dropoff-address.form-control{type: "text", name: 'dropoff_address_0', required: true, placeholder: 'Address'}
+              .validation-msg.hidden
+            .col-12.col-lg-3.order-lg-0
+              %input.dropoff-zip.form-control{type: "text", name: 'dropoff_zip_0', required: true, placeholder: 'Zipcode'}
+              .validation-msg.hidden
+            .col-12.col-lg-3.order-lg-0
+              %input.dropoff-city.form-control{type: "text", name: 'dropoff_city_0', required: true, value: 'Berlin', readonly: 'readonly'}
+              .validation-msg.hidden
+
+        .row.mt-3
+          .col-12.text-right
+            %button#remove-last-location.btn.btn-outline-dark.hidden{onclick: "removeLastDropoffRow();"}
+              Remove last dropoff location
+            %button#add-location.btn.btn-outline-dark{onclick: "addDroppoffRow();"}
+              Add another dropoff location
+
+      %h4 Invoice to:
+      .row.mt-3.mb-3
+        .col-12.col-lg-6.order-lg-0
+          %input#invoice-contact.form-control{type: "text", name: 'invoice_contact', required: true, placeholder: 'Contact name'}
+          .validation-msg.hidden
+        .col-12.col-lg-6.order-lg-0
+          %input#invoice-email.form-control{type: "email", name: 'invoice_email', required: true, placeholder: 'Email address'}
+          .validation-msg.hidden
+      .row
+        .col-12.col-lg-3.order-lg-0
+          %input#invoice-name.form-control{type: "text", name: 'invoice_business', required: true, placeholder: 'Business name'}
+          .validation-msg.hidden
+        .col-12.col-lg-3.order-lg-0
+          %input#invoice-address.form-control{type: "text", name: 'invoice_address', required: true, placeholder: 'Address'}
+          .validation-msg.hidden
+        .col-12.col-lg-3.order-lg-0
+          %input#invoice-zip.form-control{type: "text", name: 'invoice_zip', required: true, placeholder: 'Zipcode'}
+          .validation-msg.hidden
+        .col-12.col-lg-3.order-lg-0
+          %input#invoice-city.form-control{type: "text", name: 'invoice_city', required: true, placeholder: 'City'}
+          .validation-msg.hidden
+
+    %button.btn.btn-block.btn-outline-dark.my-5{onclick: 'submitData();'} Request pickup
