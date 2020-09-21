@@ -176,8 +176,8 @@ class ArchipelBerlinApp < Sinatra::Application
 
   def authenticate!
     return if current_user?
-    return if request.path_info == '/login'
-    redirect 'login'
+    return if request.path_info == '/admin/login'
+    redirect 'admin/login'
   end
 
   def current_user?
