@@ -14,7 +14,7 @@ $(document).ready(function(){
 
 function regenerateReports(date) {
   $.ajax({
-    url: '/generate_reports',
+    url: '/admin/generate_reports',
     method: 'post',
     data: {
       date: date

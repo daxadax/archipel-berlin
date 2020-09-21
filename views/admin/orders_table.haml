@@ -26,9 +26,9 @@
       %tr
         %td= order.date
         %td
-          %a{href: url("download_orders/#{order.date.to_s}")}= "#{order.date}.csv"
+          %a{href: url("admin/download_orders/#{order.date.to_s}")}= "#{order.date}.csv"
         %td
-          %a{href: url("download_reports/#{order.date.to_s}")}= "#{order.report_date}.zip"
+          %a{href: url("admin/download_reports/#{order.date.to_s}")}= "#{order.report_date}.zip"
         %td.actions
           .icon.fas.fa-info{title: 'Show order summary', onclick: "toggleOrderSummary(this)"}
           .icon.fas.fa-sync{title: 'Regenerate reports', onclick: "regenerateReports('#{order.date}')"}
