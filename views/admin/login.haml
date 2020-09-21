@@ -7,9 +7,9 @@
       - if @current_user
         %h2= "You're logged in as #{@current_user}"
         .row
-          %a.text-center.mx-auto.col-8.mt-3{href: '/'}
+          %a.text-center.mx-auto.col-8.mt-3{href: '/admin/dashboard'}
             %button.btn.btn-block.btn-default Home
-          %a.text-center.mx-auto.col-8.mt-3{href: '/logout'}
+          %a.text-center.mx-auto.col-8.mt-3{href: '/admin/logout'}
             %button.btn.btn-block.btn-danger Log Out
       - else
         %form.form-horizontal.mx-auto{action: 'login', method: 'post', role: 'form'}
