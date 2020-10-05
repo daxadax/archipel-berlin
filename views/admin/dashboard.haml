@@ -26,41 +26,60 @@
             -# %td.text-center
               .fas{class: "#{delivery_request.acknowledged? ? 'fa-check' : 'fa-times'}"}
             %td= delivery_request.dropoff? ? 'dropoff' : 'pickup'
-            %td= delivery_request.invoice_business_name
-            %td= "#{delivery_request.total_weight_in_kg}kg"
-            %td= delivery_request.delivery_locations.count
+            %td= delivery_request.invoice_location.name
+            %td= "#{delivery_request.total_delivery_weight.to_f / 1000}kg"
+            %td= delivery_request.deliveries.count
             %td.small= delivery_request.created_at
             %td.actions
               .icon.fas.fa-info{title: 'Show details', onclick: "toggleDeliveryRequest(this)"}
           %tr.delivery-request-details.hidden
             %td{colspan: '100%'}
               %h3.upcase.mt-3 pickup details
-              .pickup-details.pl-5
-                %p
+              .row.pickup-details.pl-5
+                - location = delivery_request.pickup_location
+                .col-4
                   .font-weight-bold business name:
-                  = delivery_request.pickup_business_name
-                %p
+                  = location.name
+                .col-4
                   .font-weight-bold pickup address:
-                  = "#{delivery_request.pickup_address} #{delivery_request.pickup_zip} Berlin"
-                %p
+                  = "#{location.address}, #{location.zip} Berlin"
+                .col-4
                   .font-weight-bold contact:
-                  = "#{delivery_request.pickup_contact_name} / #{delivery_request.pickup_contact_phone}"
+                  = "#{location.contact} / #{location.phone}"
 
               %hr
               %h3.upcase invoice details
-              .invoice-details.pl-5
-                %p
+              .row.invoice-details.pl-5
+                - location = delivery_request.invoice_location
+                .col-4
                   .font-weight-bold business name:
-                  = delivery_request.invoice_business_name
-                %p
+                  = location.name
+                .col-4
                   .font-weight-bold invoice address:
-                  = "#{delivery_request.invoice_address} #{delivery_request.invoice_zip} #{delivery_request.invoice_city}"
-                %p
+                  = "#{location.address}, #{location.zip} Berlin"
+                .col-4
                   .font-weight-bold contact:
-                  = "#{delivery_request.invoice_contact_name} / #{delivery_request.invoice_contact_email}"
+                  = "#{location.contact} / #{location.email}"
 
               %hr
               %h3.upcase deliveries
               %ol.pl-5
-                - delivery_request.delivery_locations.each do |delivery_location|
-                  %li= delivery_location.map(&:last).join(' ');
+                - delivery_request.deliveries.each_with_index do |delivery, index|
+                  %h4
+                    = "#{index +1}. #{delivery.location.name}: #{delivery.location.address}, #{delivery.location.zip} Berlin"
+                  .row
+                    .col-6
+                      Available from:
+                      = delivery.available_from.to_s
+                    .col-6
+                      Deadline at:
+                      = delivery.deadline.to_s
+
+                  %h4 Items
+                  - delivery.items.each do |item|
+                    .row.item
+                      .col-4= item.name
+                      .col-4= "#{item.weight_in_grams}g"
+                      .col-4= item.notes
+
+                  %hr

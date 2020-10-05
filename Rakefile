@@ -12,7 +12,7 @@ Rake::TestTask.new do |t|
 end
 
 namespace :app do
-  require './lib/archipel_berlin.rb'
+  # require './lib/archipel_berlin.rb'
 
   desc "Regenerate reports for all existing orders"
   task :regenerate_all_reports do

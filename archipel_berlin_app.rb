@@ -115,24 +115,41 @@ class ArchipelBerlinApp < Sinatra::Application
   end
 
   post '/apocalypse/request_pickup' do
-    attributes = parse_pickup_request(params)
+    # TODO: simplify this equality check or hide it somewhere
+    if params['pickup_location']['address'] == params['invoice_location']['address'] &&
+      params['pickup_location']['zip'] == params['invoice_location']['zip'] &&
+      params['pickup_location']['contact'] == params['invoice_location']['contact']
 
-    Apocalypse::Models::DeliveryRequest.create(
-      pickup_contact_name: attributes['pickup']['contact'],
-      pickup_contact_phone: attributes['pickup']['phone'],
-      pickup_business_name: attributes['pickup']['business'],
-      pickup_address: attributes['pickup']['address'],
-      pickup_city: attributes['pickup']['city'],
-      pickup_zip: attributes['pickup']['zip'],
-      invoice_contact_name: attributes['invoice']['contact'],
-      invoice_contact_email: attributes['invoice']['email'],
-      invoice_business_name: attributes['invoice']['business'],
-      invoice_address: attributes['invoice']['address'],
-      invoice_city: attributes['invoice']['city'],
-      invoice_zip: attributes['invoice']['zip'],
-      total_weight_in_kg: attributes['total_weight_in_kg'],
-      delivery_locations_json: attributes['delivery_locations'].to_json
+      pickup_location = invoice_location = Apocalypse::Models::Location.find_or_create(
+        params['pickup_location'].merge(email: params['invoice_location']['email'])
+      )
+    else
+      pickup_location = Apocalypse::Models::Location.
+        find_or_create(params['pickup_location'])
+
+      invoice_location = Apocalypse::Models::Location.
+        find_or_create(params['invoice_location'])
+    end
+
+    delivery_request = Apocalypse::Models::DeliveryRequest.create(
+      pickup_location_id: pickup_location.id,
+      invoice_location_id: invoice_location.id,
     )
+
+    params['deliveries'].each do |index, data|
+      location = Apocalypse::Models::Location.find_or_create(data['delivery_location'])
+
+      delivery = Apocalypse::Models::Delivery.create(
+        available_from: DateTime.parse(data['available_from']),
+        deadline: DateTime.parse(data['deadline']),
+        delivery_request_id: delivery_request.id,
+        location_id: location.id
+      )
+
+      data['items'].each do |index, item|
+        Apocalypse::Models::DeliveryItem.create(item.merge(delivery_id: delivery.id))
+      end
+    end
 
     status 201
     url('apocalypse/confirmation')
@@ -143,36 +160,6 @@ class ArchipelBerlinApp < Sinatra::Application
   end
 
   private
-
-  def parse_pickup_request(params)
-    result = {}
-
-    result['total_weight_in_kg'] = params.delete('total_weight_in_kg')
-
-    params.each do |k,v|
-      split_key = k.split('_')
-
-      # create sub-hash if it doesn't exist
-      result[split_key.first] =  {} if result[split_key.first].nil?
-
-      # populate sub-hash
-      result[split_key.first][split_key.drop(1).join('_')] = v
-    end
-
-    dropoffs = result.delete('dropoff')
-
-    grouped_dropoffs = dropoffs.group_by { |k,v| k.split('_').last }
-    result['delivery_locations'] = []
-
-    grouped_dropoffs.each do |dropoff_index, data|
-      dropoff = {}
-
-      # push a single, cleaned-up delivery location into the collection
-      result['delivery_locations'] << data.each { |k,v| dropoff[k.split('_').first] = v }
-    end
-
-    result
-  end
 
   def authenticate!
     return if current_user?
