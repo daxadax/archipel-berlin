@@ -19,7 +19,7 @@ class ArchipelBerlinApp < Sinatra::Application
     get '/dashboard' do
       @todays_date = Date.today
       @shopify_orders = ArchipelBerlin::Models::ShopifyOrder.reverse(:date).all
-      @delivery_requests = Apocalypse::Models::DeliveryRequest.all
+      @delivery_requests = Apocalypse::Models::DeliveryRequest.reverse(:created_at).all
       display_admin_page 'dashboard'
     end
 
