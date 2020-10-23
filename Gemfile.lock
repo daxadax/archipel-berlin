@@ -3,6 +3,9 @@ GEM
   specs:
     backports (3.18.2)
     dotenv (2.7.5)
+    faraday (1.1.0)
+      multipart-post (>= 1.2, < 3)
+      ruby2_keywords
     haml (5.1.2)
       temple (>= 0.8.0)
       tilt
@@ -11,6 +14,7 @@ GEM
       reline (>= 0.0.1)
     minitest (5.14.0)
     multi_json (1.15.0)
+    multipart-post (2.1.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     nio4r (2.5.2)
@@ -55,6 +59,7 @@ PLATFORMS
 
 DEPENDENCIES
   dotenv
+  faraday
   haml
   irb
   minitest

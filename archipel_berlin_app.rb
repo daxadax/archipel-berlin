@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/namespace'
+require './lib/services/slack_bot.rb'
 
 class ArchipelBerlinApp < Sinatra::Application
   enable :sessions
@@ -150,6 +151,8 @@ class ArchipelBerlinApp < Sinatra::Application
         Apocalypse::Models::DeliveryItem.create(item.merge(delivery_id: delivery.id))
       end
     end
+
+    Services::SlackBot.notify_delivery_request(pickup_location.name)
 
     status 201
     url('apocalypse/confirmation')

@@ -12,6 +12,8 @@ gem 'pg'
 gem 'prawn'
 gem 'rubyzip'
 
+gem 'faraday'
+
 # required to make console run on heroku ¯\_(ツ)_/¯
 gem 'irb', require: false
 
