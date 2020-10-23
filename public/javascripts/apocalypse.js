@@ -50,11 +50,6 @@ function addDeliveryRequest() {
     defaultTime: '10:00'
   });
 
-  $(newDelivery).find('.deadline').datetimepicker({
-    inline: true,
-    defaultTime: '17:00'
-  });
-
   newDelivery.classList.remove('hidden', 'delivery-request-template');
   newDelivery.classList.add('delivery-request');
 
@@ -117,7 +112,7 @@ function collectFormData() {
     deliveryRequests.push({
       delivery_location: mapInputElements($(delivery).find('.delivery-location input')),
       available_from: getDatetimepickerValue($(delivery).find('.available-from')),
-      deadline: getDatetimepickerValue($(delivery).find('.deadline')),
+      notes: $(delivery).find('.delivery-notes textarea')[0].value,
       items: collectItems($(delivery).find('.items-wrapper .item'))
     })
   };

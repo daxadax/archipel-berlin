@@ -78,16 +78,6 @@
                   %input.form-control{type: "tel", name: 'phone', required: true, placeholder: 'Phone number'}
                   .validation-msg.hidden
 
-            .row.my-3
-              .col-12.col-lg-6
-                %label Available for pickup from:
-                .text-center.mt-3
-                  .available-from
-              .col-12.col-lg-6
-                %label Delivery deadline:
-                .text-center.mt-3
-                  .deadline
-
             %h5.mt-3 Items:
             .items-wrapper.mb-5
               .row.item.my-3
@@ -102,6 +92,18 @@
               .col-12.text-right
                 %button.add-item.btn.btn-outline-dark{onclick: "addItem(this);"}
                   Add item
+
+            .row.my-3
+              .col-12.col-lg-6
+                %label Available for pickup from:
+                .text-center.mt-3
+                  .available-from
+
+              .delivery-notes.col-12.col-lg-6
+                %label Anything else we need to know?
+                .text-center.mt-3
+                  %textarea.form-control{name: 'notes'}
+
 
         .row.mt-3
           .col-12.text-right

@@ -142,7 +142,7 @@ class ArchipelBerlinApp < Sinatra::Application
 
       delivery = Apocalypse::Models::Delivery.create(
         available_from: DateTime.parse(data['available_from']),
-        deadline: DateTime.parse(data['deadline']),
+        notes: data['notes'],
         delivery_request_id: delivery_request.id,
         location_id: location.id
       )

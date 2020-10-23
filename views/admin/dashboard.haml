@@ -67,19 +67,19 @@
                 - delivery_request.deliveries.each_with_index do |delivery, index|
                   %h4
                     = "#{index +1}. #{delivery.location.name}: #{delivery.location.address}, #{delivery.location.zip} Berlin"
-                  .row
+                  .row.py-3
                     .col-6
                       Available from:
-                      = delivery.available_from.to_s
+                      = delivery.available_from.strftime("%d %B %Y, %H:%M")
                     .col-6
-                      Deadline at:
-                      = delivery.deadline.to_s
+                      Delivery notes:
+                      = delivery.notes
 
                   %h4 Items
                   - delivery.items.each do |item|
                     .row.item
                       .col-4= item.name
-                      .col-4= "#{item.weight_in_grams}g"
+                      .col-4= "#{item.weight_in_grams.to_f / 1000}kg"
                       .col-4= item.notes
 
                   %hr
