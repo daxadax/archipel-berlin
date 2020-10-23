@@ -9,10 +9,10 @@ module Services
     }
 
     def self.notify_delivery_request(business_name)
-      new.notify_delivery_request(delivery_request)
+      new.notify_delivery_request(business_name)
     end
 
-    def notify_delivery_request(delivery_request)
+    def notify_delivery_request(business_name)
       url = HOST + 'chat.postMessage'
       data = {
         channel: CHANNELS['delivery-request-notifications'],
