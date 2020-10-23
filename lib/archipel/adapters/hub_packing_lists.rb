@@ -1,8 +1,6 @@
 module ArchipelBerlin
   module Adapters
     class HubPackingLists < Adapter
-      REQUIRES_ITEMIZED_DETAILS = ['mash pit', 'rocket wine'].freeze
-
       def self.call(date, type)
         new(date).call(type)
       end
@@ -61,9 +59,7 @@ module ArchipelBerlin
 
           pdf.text " - #{vendor} (#{vendor_items.map(&:quantity).sum} items)\n"
 
-          if REQUIRES_ITEMIZED_DETAILS.include?(vendor)
-            vendor_items.each { |i| pdf.text " --- #{i.quantity}x #{i.name}\n" }
-          end
+          vendor_items.each { |i| pdf.text " --- #{i.quantity}x #{i.name}\n" }
         end
       end
     end
