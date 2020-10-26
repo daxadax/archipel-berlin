@@ -31,23 +31,22 @@ module Services
     def add_delivery_request_pdf(pdf_path, parent_msg)
       filename = pdf_path.split('/').last
 
-      data = {
-        file: Faraday::UploadIO.new(pdf_path, 'application/pdf', filename),
-        thread_ts: JSON.parse(parent_msg)['ts'],
-        channels: CHANNELS['delivery-request-notifications'],
-        filetype: 'pdf',
-        filename: filename
-      }
-
-      Faraday.post(HOST + 'files.upload') do |f|
+      conn = Faraday.new(HOST) do |f|
         f.request :multipart
         f.request :url_encoded
         f.adapter Faraday.default_adapter
-        f.headers['Content-Type'] = 'application/json'
+      end
+
+      conn.post('files.upload') do |f|
         f.headers['Authorization'] = "Bearer #{TOKEN}"
-        f.body = data.to_json
+        f.body = {
+          file: Faraday::UploadIO.new(pdf_path, 'application/pdf', filename),
+          thread_ts: parent_msg['ts'],
+          channels: CHANNELS['delivery-request-notifications'],
+          filetype: 'pdf',
+          filename: filename
+        }
       end
     end
   end
 end
-
