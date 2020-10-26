@@ -42,7 +42,7 @@
                   = location.name
                 .col-4
                   .font-weight-bold pickup address:
-                  = "#{location.address}, #{location.zip} Berlin"
+                  = location.full_address
                 .col-4
                   .font-weight-bold contact:
                   = "#{location.contact} / #{location.phone}"
@@ -56,7 +56,7 @@
                   = location.name
                 .col-4
                   .font-weight-bold invoice address:
-                  = "#{location.address}, #{location.zip} Berlin"
+                  = location.full_address
                 .col-4
                   .font-weight-bold contact:
                   = "#{location.contact} / #{location.email}"
@@ -66,7 +66,7 @@
               %ol.pl-5
                 - delivery_request.deliveries.each_with_index do |delivery, index|
                   %h4
-                    = "#{index +1}. #{delivery.location.name}: #{delivery.location.address}, #{delivery.location.zip} Berlin"
+                    = "#{index +1}. #{delivery.location.name}: #{delivery.location.full_address}"
                   .row.py-3
                     .col-6
                       Available from:

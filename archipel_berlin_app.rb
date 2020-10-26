@@ -152,7 +152,12 @@ class ArchipelBerlinApp < Sinatra::Application
       end
     end
 
-    Services::SlackBot.notify_delivery_request(pickup_location.name)
+    pdf_path = Apocalypse::Adapters::DeliveryPdf.call(delivery_request.id)
+
+    Services::SlackBot.notify_delivery_request(
+      pickup_location: pickup_location.name,
+      pdf_path: pdf_path
+    )
 
     status 201
     url('apocalypse/confirmation')
