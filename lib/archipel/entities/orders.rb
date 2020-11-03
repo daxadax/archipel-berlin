@@ -3,8 +3,20 @@ module ArchipelBerlin
     class Orders
       AVAILABLE_ORDER_TYPES = %i[delivery pickup]
 
-      def self.in_route(orders, route_name)
-        new(orders.select { |order| order.delivery_route == route_name })
+      def self.in_delivery_route(orders, route_name)
+        relevant = by_type(orders, :delivery).
+          all.
+          select { |o| o.delivery_route == route_name }
+
+        new(relevant)
+      end
+
+      def self.at_pickup_location(orders, pickup_location)
+        relevant = by_type(orders, :pickup).
+          all.
+          select { |o| o.pickup_location == pickup_location }
+
+        new(relevant)
       end
 
       def self.by_type(orders, type)
@@ -15,6 +27,10 @@ module ArchipelBerlin
 
       def initialize(orders)
         @orders = orders
+      end
+
+      def all
+        orders
       end
 
       def total_items

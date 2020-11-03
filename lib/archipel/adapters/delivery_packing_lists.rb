@@ -1,38 +1,36 @@
 module ArchipelBerlin
   module Adapters
-    class HubPackingLists < Adapter
-      def self.call(date, type)
-        new(date).call(type)
+    class DeliveryPackingLists < Adapter
+      def self.call(date)
+        new(date).call
       end
 
-      def call(type)
-        routes.each do |hub|
-          hub_orders = Entities::Orders.in_route(orders, hub)
-          next unless hub_orders.present?
+      def call
+        routes.each do |route|
+          relevant_orders = Entities::Orders.in_delivery_route(orders, route)
+          next unless relevant_orders.present?
 
-          # TODO: orders.send(:orders) is gross, yuck.
-          orders_by_type = Entities::Orders.by_type(hub_orders.send(:orders), type)
-          next unless orders_by_type.present?
+          pdf_path = "./tmp/#{route}_deliveries.pdf"
 
-          Prawn::Document.generate("./tmp/#{hub}_#{type}.pdf") do |pdf|
+          Prawn::Document.generate(pdf_path) do |pdf|
             pdf.font_families.update("Arial" => {
               :normal => "./fonts/arial.ttf",
               :bold => "./fonts/arial-bold.ttf"
             })
             pdf.font 'Arial'
 
-            pdf.text "#{type} packing list for #{hub} on #{date}\n\n"
+            pdf.text "Deliveries for #{route} on #{date}\n\n"
 
-            orders_by_type.by_zip_code.each do |zip_code, orders|
-              pdf.text "#{zip_code} - #{orders.count} ORDER(S)\n\n", style: :bold
+            relevant_orders.by_zip_code.each do |zip_code, local_orders|
+              pdf.text "#{zip_code} - #{local_orders.count} ORDER(S)\n\n", style: :bold
 
-              orders_by_number = orders.sort_by(&:order_number)
+              orders_by_number = local_orders.sort_by(&:order_number)
 
               orders_by_number.each do |order|
                 write_order(pdf, order, order == orders_by_number.last)
               end
             end
-          end
+           end
         end
       end
 

@@ -11,7 +11,7 @@ module ArchipelBerlin
 
         ### generate all reports
         Commands::GenerateVendorDistribution.call(date: date)
-        Commands::GenerateHubPackingLists.call(date: date)
+        Commands::GeneratePackingLists.call(date: date)
         Commands::GenerateOrderSummary.call(date: date)
 
         # NOTE: this is kept only for historical reasons

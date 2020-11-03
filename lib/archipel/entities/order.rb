@@ -10,6 +10,12 @@ module ArchipelBerlin
         @delivery_route ||= determine_delivery_route
       end
 
+      def pickup_location
+        return unless for_pickup?
+
+        (tags & ArchipelBerlin::PICKUP_LOCATIONS).first
+      end
+
       def for_delivery?
         !for_pickup?
       end
