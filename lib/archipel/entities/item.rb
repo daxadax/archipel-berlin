@@ -10,7 +10,7 @@ module ArchipelBerlin
       end
 
       def vendor
-        data['Vendor']
+        data['Vendor'].to_s.empty? ? "Unspecified vendor" : data['Vendor']
       end
 
       def quantity

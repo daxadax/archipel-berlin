@@ -5,17 +5,6 @@ module ArchipelBerlin
         orders.flat_map(&:items).group_by(&:vendor).each do |vendor, items|
           next if SKIPPED_VENDORS.include?(vendor.downcase)
 
-          # NOTE: catch for missing vendors
-          # TODO: should print to dashboard rather than console
-          if vendor.nil?
-            items.each do |item|
-              print "\n### INFO ### no vendor found for item #{item.order_number}\n\n"
-            end
-            next
-          end
-
-          vendor = 'Unspecified vendor' if vendor.empty?
-
           path = "./tmp/#{vendor.gsub(' ', '_').upcase}.pdf"
           title = "Packing list for #{vendor} on #{date}"
           subtitle = "#{items.map(&:quantity).sum} total items"
