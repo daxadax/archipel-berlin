@@ -14,18 +14,13 @@ module ArchipelBerlin
             next
           end
 
-          document_path = "./tmp/#{vendor.gsub(' ', '_').upcase}.pdf"
+          vendor = 'Unspecified vendor' if vendor.empty?
 
-          Prawn::Document.generate(document_path) do |pdf|
-            pdf.font_families.update("Arial" => {
-              :normal => "./fonts/arial.ttf",
-              :bold => "./fonts/arial-bold.ttf"
-            })
-            pdf.font 'Arial'
+          path = "./tmp/#{vendor.gsub(' ', '_').upcase}.pdf"
+          title = "Packing list for #{vendor} on #{date}"
+          subtitle = "#{items.map(&:quantity).sum} total items"
 
-            pdf.text "Packing list for #{vendor} on #{date}\n", style: :bold
-            pdf.text "#{items.map(&:quantity).sum} total items\n\n"
-
+          ::Services::PdfGenerator.new(path, title, subtitle).call do |pdf|
             items.group_by(&:delivery_route).each do |route_name, route_items|
               header_text = "#{route_name} - #{route_items.map(&:quantity).sum} ITEMS(S)\n\n".upcase
               pdf.text header_text, style: :bold, size: 14
@@ -38,7 +33,12 @@ module ArchipelBerlin
                 pdf.text "#{order_number} #{order_items.first.order_name}", style: :bold
 
                 order_items.each do |item|
-                  pdf.text "#{item.quantity}x #{item.name}"
+                  pdf.indent(3) do
+                    pdf.formatted_text [
+                      { text: "\u2610", font: "./fonts/DejaVuSans.ttf" },
+                      { text: " #{item.quantity}x #{item.name}\n" }
+                    ]
+                  end
                 end
 
                 pdf.text "\n" # spacer

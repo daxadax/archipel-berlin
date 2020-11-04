@@ -45,6 +45,7 @@ class ArchipelBerlinApp < Sinatra::Application
 
     post '/generate_reports' do
       date = params['date']
+      # TODO: why am i not calling the command directly, wtf?
       ArchipelBerlin::Models::ShopifyOrder.find(date: date).generate_reports
     end
 

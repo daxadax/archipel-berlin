@@ -10,17 +10,11 @@ module ArchipelBerlin
           relevant_orders = Entities::Orders.in_delivery_route(orders, route)
           next unless relevant_orders.present?
 
-          pdf_path = "./tmp/#{route}_deliveries.pdf"
+          path = "./tmp/#{route}_deliveries.pdf"
+          title = "Deliveries for #{route} on #{date}"
+          subtitle = "#{relevant_orders.all.count} ORDER(S)"
 
-          Prawn::Document.generate(pdf_path) do |pdf|
-            pdf.font_families.update("Arial" => {
-              :normal => "./fonts/arial.ttf",
-              :bold => "./fonts/arial-bold.ttf"
-            })
-            pdf.font 'Arial'
-
-            pdf.text "Deliveries for #{route} on #{date}\n\n"
-
+          ::Services::PdfGenerator.new(path, title, subtitle).call do |pdf|
             relevant_orders.by_zip_code.each do |zip_code, local_orders|
               pdf.text "#{zip_code} - #{local_orders.count} ORDER(S)\n\n", style: :bold
 
@@ -55,9 +49,16 @@ module ArchipelBerlin
           next if SKIPPED_VENDORS.include?(vendor)
           next unless vendor_items.any?
 
-          pdf.text " - #{vendor} (#{vendor_items.map(&:quantity).sum} items)\n"
+          pdf.text "#{vendor} (#{vendor_items.map(&:quantity).sum} items)\n"
 
-          vendor_items.each { |i| pdf.text " --- #{i.quantity}x #{i.name}\n" }
+          vendor_items.each do |item|
+            pdf.indent(3) do
+              pdf.formatted_text [
+                { text: "\u2610", font: "./fonts/DejaVuSans.ttf" },
+                { text: " #{item.quantity}x #{item.name}\n" }
+              ]
+            end
+          end
         end
       end
     end

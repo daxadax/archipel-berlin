@@ -11,20 +11,10 @@ module Apocalypse
 
       def call
         path = "./tmp/delivery_request-#{delivery_request.id}.pdf"
+        title = "Delivery Request"
+        subtitle = delivery_request.created_at.strftime("%d %B %Y, %H:%M")
 
-        Prawn::Document.generate(path) do |pdf|
-          pdf.font_families.update("Arial" => {
-            :normal => "./fonts/arial.ttf",
-            :bold => "./fonts/arial-bold.ttf"
-          })
-          pdf.font 'Arial'
-
-          pdf.text "Delivery Request\n",
-            style: :bold, align: :center, size: 18
-          pdf.text delivery_request.created_at.strftime("%d %B %Y, %H:%M"),
-            style: :bold, align: :center
-          pdf.text "\n"
-
+        ::Services::PdfGenerator.new(path, title, subtitle).call do |pdf|
           pdf.bounding_box([0, 660], width: 250, height: 100) do
             pdf.move_down 10
             pdf.text "Pickup details:", align: :center
@@ -33,7 +23,7 @@ module Apocalypse
             pdf.stroke_bounds
           end
 
-          pdf.bounding_box([300, 660], width: 250, height: 100) do
+          pdf.bounding_box([275, 660], width: 250, height: 100) do
             pdf.move_down 10
             pdf.text "Invoice details:", align: :center
             pdf.move_down 5

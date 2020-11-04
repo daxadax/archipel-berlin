@@ -1,3 +1,6 @@
+require 'prawn'
+require './lib/services/pdf_generator.rb'
+
 # models
 require './lib/apocalypse/models/delivery_request.rb'
 require './lib/apocalypse/models/location.rb'

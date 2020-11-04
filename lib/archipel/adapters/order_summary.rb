@@ -2,15 +2,11 @@ module ArchipelBerlin
   module Adapters
     class OrderSummary < Adapter
       def call
-        Prawn::Document.generate("./tmp/#{date}_order_information.pdf") do |pdf|
-          pdf.font_families.update("Arial" => {
-            :normal => "./fonts/arial.ttf",
-            :bold => "./fonts/arial-bold.ttf"
-          })
-          pdf.font 'Arial'
+        path = "./tmp/#{date}_order_information.pdf"
+        title = "Order Information for #{date}"
+        subtitle = "Orders #{order_numbers.first} - #{order_numbers.last}"
 
-          pdf.text "Order Information for #{date}\n\n", style: :bold
-          pdf.text "Orders #{order_numbers.first} - #{order_numbers.last}\n"
+        ::Services::PdfGenerator.new(path, title, subtitle).call do |pdf|
           pdf.text "First order: #{order_times.first}\n"
           pdf.text "Last order: #{order_times.last}\n\n"
 

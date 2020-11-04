@@ -1,5 +1,6 @@
 require 'csv'
 require 'prawn'
+require './lib/services/pdf_generator.rb'
 
 # models
 require './lib/archipel/models/shopify_order.rb'
