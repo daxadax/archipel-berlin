@@ -15,7 +15,7 @@ require './lib/archipel/services/generate_zip_file.rb'
 # commands
 require './lib/archipel/commands/command.rb'
 require './lib/archipel/commands/generate_reports.rb'
-require './lib/archipel/commands/generate_hub_packing_lists.rb'
+require './lib/archipel/commands/generate_packing_lists.rb'
 require './lib/archipel/commands/generate_vendor_distribution.rb'
 require './lib/archipel/commands/generate_lode_stijn_orders.rb'
 require './lib/archipel/commands/generate_order_summary.rb'
@@ -23,7 +23,8 @@ require './lib/archipel/commands/generate_order_summary.rb'
 # adapters
 require './lib/archipel/adapters/adapter.rb'
 require './lib/archipel/adapters/vendor_distribution_documents.rb'
-require './lib/archipel/adapters/hub_packing_lists.rb'
+require './lib/archipel/adapters/delivery_packing_lists.rb'
+require './lib/archipel/adapters/pickup_packing_lists.rb'
 require './lib/archipel/adapters/lode_stijn_orders.rb'
 require './lib/archipel/adapters/order_summary.rb'
 
@@ -43,4 +44,12 @@ module ArchipelBerlin
     kreuzberg: { zip_code: XBERG_ZIPCODES },
     neukölln: { zip_code: NKOLN_ZIPCODES }
   }
+
+  PICKUP_LOCATIONS = [
+    'ISLAHUB',
+    'ROCKET HUB',
+    'OUGB HUB',
+    'ARCHI HUB',
+    'HALASCHES HUB'
+  ]
 end
