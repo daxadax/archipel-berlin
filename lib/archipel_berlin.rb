@@ -48,7 +48,7 @@ module ArchipelBerlin
   PICKUP_LOCATIONS = [
     'ISLAHUB',
     'ROCKET HUB',
-    'OUGB HUB',
+    'ALBATROSS HUB',
     'ARCHI HUB',
     'HALASCHES HUB'
   ]
