@@ -3,9 +3,11 @@ module Services
     HOST = 'https://slack.com/api/'
     TOKEN = ENV['SLACK_TOKEN']
     DELIVERY_REQUESTS_CHANNEL = ENV['SLACK_CHANNEL_DELIVERY_REQUESTS']
+    APPLICATION_ERRORS_CHANNEL = ENV['SLACK_CHANNEL_APPLICATION_ERRORS']
 
     CHANNELS = {
-      'delivery-request-notifications' => DELIVERY_REQUESTS_CHANNEL
+      'delivery-request-notifications' => DELIVERY_REQUESTS_CHANNEL,
+      'application-errors' => APPLICATION_ERRORS_CHANNEL
     }
 
     def self.notify_delivery_request(pickup_location:, pdf_path:)
@@ -17,6 +19,10 @@ module Services
       end
     end
 
+    def self.notify_error(message:, backtrace:)
+      new.notify_error(message, backtrace)
+    end
+
     def notify_delivery_request(pickup_location)
       Faraday.post(HOST + 'chat.postMessage') do |f|
         f.headers['Content-Type'] = 'application/json'
@@ -24,6 +30,32 @@ module Services
         f.body = {
           channel: CHANNELS['delivery-request-notifications'],
           text: "#{pickup_location} has requested a delivery! :tada:"
+        }.to_json
+      end
+    end
+
+    def notify_error(message, backtrace)
+      Faraday.post(HOST + 'chat.postMessage') do |f|
+        f.headers['Content-Type'] = 'application/json'
+        f.headers['Authorization'] = "Bearer #{TOKEN}"
+        f.body = {
+          channel: CHANNELS['application-errors'],
+          blocks: [
+            {
+              type: "header",
+              text: {
+                type: "plain_text",
+                text: message
+              }
+            },
+            {
+              type: "section",
+              text: {
+                type: "mrkdwn",
+                text: "```#{backtrace}```"
+              }
+            }
+          ]
         }.to_json
       end
     end

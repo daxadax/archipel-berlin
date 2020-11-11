@@ -5,6 +5,19 @@ require './lib/services/slack_bot.rb'
 class ArchipelBerlinApp < Sinatra::Application
   enable :sessions
 
+  # catch exceptions and send them to slack
+  error Exception do
+    e = env['sinatra.error']
+
+    Services::SlackBot.notify_error(
+      message: "#{e.exception.class}: #{e.message}",
+      backtrace: e.backtrace.first(10).join("\n")
+    )
+
+    style = '%h1{style: "text-align:center;padding-top:2em;"}'
+    haml "#{style} Sorry, something went wrong!"
+  end
+
   namespace '/admin' do
     before do
       logger.info "Authenticating request"
