@@ -11,7 +11,7 @@ class ArchipelBerlinApp < Sinatra::Application
 
     Services::SlackBot.notify_error(
       message: "#{e.exception.class}: #{e.message}",
-      backtrace: e.backtrace.first(10).join("\n")
+      backtrace: e.backtrace.join("\n")
     )
 
     style = '%h1{style: "text-align:center;padding-top:2em;"}'
@@ -175,6 +175,13 @@ class ArchipelBerlinApp < Sinatra::Application
 
     status 201
     url('apocalypse/confirmation')
+  rescue => e
+    Services::SlackBot.notify_error(
+      message: "#{e.exception.class}: #{e.message}",
+      backtrace: e.backtrace.join("\n")
+    )
+
+    status 500
   end
 
   get '/apocalypse/confirmation' do
