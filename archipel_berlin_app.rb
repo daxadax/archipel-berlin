@@ -126,7 +126,7 @@ class ArchipelBerlinApp < Sinatra::Application
   end
 
   get '/apocalypse/request_pickup' do
-    display_page 'apocalypse/form', pickup_zipcodes: Apocalypse::PICKUP_ZIPCODES
+    display_page 'apocalypse/form'
   end
 
   post '/apocalypse/request_pickup' do

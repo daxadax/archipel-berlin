@@ -13,16 +13,6 @@ $(document).ready(function() {
   $('#form input').on('change', function() {
     setElementValidity(this);
   });
-
-  $('#form #pickup-zip').on('change', function() {
-    acceptedZipcodes = this.getAttribute('data-servicearea');
-
-    if( this.value.length != 5 || !acceptedZipcodes.includes(this.value) ) {
-      // TODO: log requested zip code with timestamp
-      // TODO: should be a modal, alert is too harsh
-      alert('Sorry, we can\'t pickup orders in '+ this.value);
-    }
-  });
 });
 
 function addItem(el) {
