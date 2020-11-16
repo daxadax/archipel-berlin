@@ -30,6 +30,8 @@ use Rack::MethodOverride
 
 # Mount additional controllers
 use AdminController
+use UsersController
+use OrganizationsController
 use DeliveryRequestsController
 
 run BaseController

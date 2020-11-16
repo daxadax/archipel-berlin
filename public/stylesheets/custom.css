@@ -29,3 +29,9 @@ nav a:focus {
 input[type="date"] {
   line-height: unset;
 }
+
+#signup form {
+  width: 50%;
+  margin: 3em auto;
+  background-size: cover;
+}

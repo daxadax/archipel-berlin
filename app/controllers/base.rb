@@ -67,4 +67,17 @@ class BaseController < Sinatra::Application
     @hide_header = locals.delete(:hide_header)
     haml location.to_sym, layout: false, locals: locals
   end
+
+  helpers do
+    def logged_in?
+      #check if current_user variable is set
+      #!! converts value to boolean
+      # use session to determine the definition of being logged in
+      !!current_user
+    end
+
+    def current_user
+      Apocalypse::Models::User[session[:user_id]]
+    end
+  end
 end
