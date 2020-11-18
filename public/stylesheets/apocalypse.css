@@ -42,7 +42,6 @@ input.form-control:focus {
 }
 
 input.error {
-  background: url('../images/red-x.png') left no-repeat;
   background-size: 25px;
   padding-left: 30px;
 }

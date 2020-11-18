@@ -29,7 +29,7 @@ class UsersController < BaseController
 
       if params[:signup_type] == 'create'
         # i want to register a new organization
-        redirect 'orgniazations/new'
+        redirect 'organizations/new'
       else
         # i want to join an existing organization
         redirect 'organizations/how_to_join'

@@ -30,8 +30,12 @@ input[type="date"] {
   line-height: unset;
 }
 
-#signup form {
+form.center-aligned-form {
   width: 50%;
   margin: 3em auto;
   background-size: cover;
+}
+
+form.center-aligned-form input {
+  padding-left: 7px;
 }
