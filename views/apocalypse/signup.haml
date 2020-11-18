@@ -1,7 +1,7 @@
 %section#signup.container.mt-5
   %h2 Create an Account
   %hr.mb-5
-    %form#form{role: 'form', action: "/signup", method: "post"}
+    %form#form.center-aligned-form{role: 'form', action: "/signup", method: "post"}
       %fieldset
         %input.w-100.my-3.email{type: "email", name: "email", placeholder: "Email", required: true}
         %input#password.w-100.my-3{type: "password", name: "password", placeholder: "Password", required: true}
@@ -28,4 +28,17 @@
 
         %input.btn.btn-block.btn-outline-dark.my-5{role: 'button', type: 'submit', value: "SIGNUP"}
 
-  %script{src: url('javascripts/users.js')}
+:javascript
+  var password = document.getElementById("password");
+      confirm_password = document.getElementById("password-confirmation");
+
+  function validatePassword(){
+    if(password.value != confirm_password.value) {
+      confirm_password.setCustomValidity("Passwords Don't Match");
+    } else {
+      confirm_password.setCustomValidity('');
+    }
+  }
+
+  password.onchange = validatePassword;
+  confirm_password.onkeyup = validatePassword;
