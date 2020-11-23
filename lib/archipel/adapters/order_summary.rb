@@ -3,10 +3,10 @@ module ArchipelBerlin
     class OrderSummary < Adapter
       def call
         path = "./tmp/#{date}_order_information.pdf"
-        title = "Order Information for #{date}"
-        subtitle = "Orders #{order_numbers.first} - #{order_numbers.last}"
+        title = "Order Summary"
+        subtitles = [date, "Orders #{order_numbers.first} - #{order_numbers.last}"]
 
-        ::Services::PdfGenerator.new(path, title, subtitle).call do |pdf|
+        ::Services::PdfGenerator.new(path, title, subtitles).call do |pdf|
           pdf.text "First order: #{order_times.first}\n"
           pdf.text "Last order: #{order_times.last}\n\n"
 

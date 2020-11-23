@@ -6,10 +6,10 @@ module ArchipelBerlin
           next if SKIPPED_VENDORS.include?(vendor.downcase)
 
           path = "./tmp/#{vendor.gsub(' ', '_').upcase}.pdf"
-          title = "Packing list for #{vendor} on #{date}"
-          subtitle = "#{items.map(&:quantity).sum} total items"
+          title = "#{vendor} packing list"
+          subtitles = [date, "#{items.map(&:quantity).sum} total items"]
 
-          ::Services::PdfGenerator.new(path, title, subtitle).call do |pdf|
+          ::Services::PdfGenerator.new(path, title, subtitles).call do |pdf|
             items.group_by(&:delivery_route).each do |route_name, route_items|
               header_text = "#{route_name} - #{route_items.map(&:quantity).sum} ITEMS(S)\n\n".upcase
               pdf.text header_text, style: :bold, size: 14

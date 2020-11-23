@@ -12,9 +12,9 @@ module Apocalypse
       def call
         path = "./tmp/delivery_request-#{delivery_request.id}.pdf"
         title = "Delivery Request"
-        subtitle = delivery_request.created_at.strftime("%d %B %Y, %H:%M")
+        subtitles = [delivery_request.created_at.strftime("%d %B %Y, %H:%M")]
 
-        ::Services::PdfGenerator.new(path, title, subtitle).call do |pdf|
+        ::Services::PdfGenerator.new(path, title, subtitles).call do |pdf|
           pdf.bounding_box([0, 660], width: 250, height: 100) do
             pdf.move_down 10
             pdf.text "Pickup details:", align: :center

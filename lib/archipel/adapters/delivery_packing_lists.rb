@@ -11,10 +11,10 @@ module ArchipelBerlin
           next unless relevant_orders.present?
 
           path = "./tmp/#{route}_deliveries.pdf"
-          title = "Deliveries for #{route} on #{date}"
-          subtitle = "#{relevant_orders.all.count} ORDER(S)"
+          title = "#{route} deliveries"
+          subtitles = [date, "#{relevant_orders.all.count} ORDER(S)"]
 
-          ::Services::PdfGenerator.new(path, title, subtitle).call do |pdf|
+          ::Services::PdfGenerator.new(path, title, subtitles).call do |pdf|
             relevant_orders.by_zip_code.each do |zip_code, local_orders|
               pdf.text "#{zip_code} - #{local_orders.count} ORDER(S)\n\n", style: :bold
 
