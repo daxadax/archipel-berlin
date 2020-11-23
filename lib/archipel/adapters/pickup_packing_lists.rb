@@ -11,10 +11,10 @@ module ArchipelBerlin
           next unless relevant_orders.present?
 
           path = "./tmp/#{pickup_location.split.join('_')}_pickups.pdf"
-          title = "Pickups for #{pickup_location} on #{date}\n\n"
-          subtitle = "#{relevant_orders.all.count} ORDER(S)"
+          title = "#{pickup_location} pickups"
+          subtitles = [date, "#{relevant_orders.all.count} ORDER(S)"]
 
-          ::Services::PdfGenerator.new(path, title, subtitle).call do |pdf|
+          ::Services::PdfGenerator.new(path, title, subtitles).call do |pdf|
             sorted_orders = relevant_orders.all.sort_by(&:order_number)
             sorted_orders.each do |order|
               write_order(pdf, order, order == sorted_orders.last)

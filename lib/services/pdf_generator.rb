@@ -2,10 +2,10 @@ module Services
   class PdfGenerator
     include Prawn::View
 
-    def initialize(path, title, subtitle = nil)
+    def initialize(path, title, subtitles = [])
       @path = path
       @title = title
-      @subtitle = subtitle
+      @subtitles = subtitles
     end
 
     def call(&block)
@@ -20,7 +20,7 @@ module Services
     end
 
     private
-    attr_reader :path, :title, :subtitle
+    attr_reader :path, :title, :subtitles
 
     def document
       @document ||= Prawn::Document.new(page_size: 'A4')
@@ -37,8 +37,10 @@ module Services
 
     def write_header
       document.text title, style: :bold, align: :left, size: 18
-      image image_path('archipel-logo.jpg'), at: [315, 780], width: 200
-      document.text subtitle, style: :bold, align: :left if subtitle
+      image image_path('archipel-logo.jpg'), at: [415, 780], width: 100
+      subtitles.each do |subtitle|
+        document.text subtitle, style: :bold, align: :left
+      end
     end
 
     def image_path(filename)
