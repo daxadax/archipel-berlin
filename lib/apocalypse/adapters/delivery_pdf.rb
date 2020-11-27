@@ -65,21 +65,22 @@ module Apocalypse
       attr_reader :delivery_request
 
       def pickup_details
-        pickup_location = delivery_request.pickup_location
+        location = delivery_request.pickup_location
+        contact = delivery_request.pickup_contact
 
-        pickup_location.name + "\n" +
-        pickup_location.full_address + "\n" +
-        "Contact: #{pickup_location.contact} \n" +
-        pickup_location.phone
+        location.name + "\n" +
+        location.full_address + "\n" +
+        "Contact: #{contact.name} \n" +
+        contact.phone
       end
 
+      # TODO: this should be cleaned up and contact information added after
+      # user accounts are fully merged
       def invoice_details
         invoice_location = delivery_request.invoice_location
 
         invoice_location.name + "\n" +
-        invoice_location.full_address + "\n" +
-        "Contact: #{invoice_location.contact} \n" +
-        invoice_location.email
+        invoice_location.full_address + "\n"
       end
     end
   end

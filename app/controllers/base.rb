@@ -1,6 +1,11 @@
 require 'sinatra'
 require 'sinatra/namespace'
-require './lib/services/slack_bot.rb'
+
+if ENV["RACK_ENV"] == 'production'
+  require './lib/services/slack_bot.rb'
+else
+  require './spec/mocks/slack_bot.rb'
+end
 
 class BaseController < Sinatra::Application
   enable :sessions
@@ -11,40 +16,61 @@ class BaseController < Sinatra::Application
 
     Services::SlackBot.notify_error(
       message: "#{e.exception.class}: #{e.message}",
-      backtrace: e.backtrace.join("\n")
+      backtrace: e.backtrace.join("\n"),
+      error: e
     )
 
     style = '%h1{style: "text-align:center;padding-top:2em;"}'
     haml "#{style} Sorry, something went wrong!"
   end
 
+  before do
+    authenticate!
+  end
+
   get '/' do
     redirect '/apocalypse/request_pickup'
   end
 
-  private
+  get '/utils/contact_options_for_location' do
+    location = Apocalypse::Models::Location[params[:location_id].to_i]
 
-  def authenticate!
-    return if current_user?
-    return if request.path_info == '/admin/login'
-    redirect 'admin/login'
+    location.contacts.map { |c| { id: c.id, name: c.name } }.to_json
   end
 
-  def current_user?
-    !!session['current_user']
+  private
+
+  attr_reader :current_user
+
+  def authenticate!
+    return if request.path_info =~ /stylesheets/
+
+    set_current_user! && return if logged_in?
+
+    # TODO: this unless will go after users flow fully implemented
+    return if request.path_info == '/apocalypse/request_pickup'
+
+    return if request.path_info == '/login'
+    return if request.path_info == '/admin/login'
+    return if request.path_info == '/signup'
+
+    redirect '/login'
+  end
+
+  def logged_in?
+    !!session['user_id']
   end
 
   def set_current_user!
-    @current_user = session['current_user']
+    @current_user = Apocalypse::Models::User.find(external_id: session['user_id'])
   end
 
-  def messages
-    session['messages'] ||= Array.new
+  def notification
+    session['notification'] ||= Hash.new
   end
 
-  def display_messages_and_reset_cache(&block)
-    messages.each &block
-    messages.clear
+  def clear_notification
+    notification.clear
   end
 
   def display_page(location, locals = {})
@@ -69,15 +95,12 @@ class BaseController < Sinatra::Application
   end
 
   helpers do
-    def logged_in?
-      #check if current_user variable is set
-      #!! converts value to boolean
-      # use session to determine the definition of being logged in
-      !!current_user
-    end
-
-    def current_user
-      Apocalypse::Models::User[session[:user_id]]
+    def delivery_status_class(status)
+      case status
+      when 'confirmed' then 'success'
+      when 'rejected' then 'danger'
+      when 'pending' then 'warning'
+      end
     end
   end
 end

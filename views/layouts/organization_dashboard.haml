@@ -1,23 +1,27 @@
 %html
 %head
-  %title Archipel Berlin
+  %title Archipel Deliveries Dashboard
 
   %link{rel: "stylesheet", type: 'text/css', href: url("stylesheets/bootstrap.min.css")}
   %link{rel: 'stylesheet', type: 'text/css', href: url('stylesheets/datetimepicker.css')}
   %link{rel: 'stylesheet', type: 'text/css', href: url('stylesheets/custom.css')}
-  %link{rel: 'stylesheet', type: 'text/css', href: url('stylesheets/apocalypse.css')}
+  %link{rel: 'stylesheet', type: 'text/css', href: url('stylesheets/organizations.css')}
 
   %script{src: "https://kit.fontawesome.com/467c6e8217.js", crossorigin: "anonymous"}
   -# add jquery at the top so inline javascript in views can access it
   %script{src: url('javascripts/jquery-3.4.1.min.js')}
 
 %body
-  #content
-    = display_partial 'layouts/alert'
+  = display_partial 'layouts/alert'
 
-    .container
-      = yield
+  .d-flex
+    = display_partial "apocalypse/organizations/_sidebar", organization: organization
 
+    #content.w-100
+      #dashboard-container.mx-auto
+        = yield
+
+%script{src: url('javascripts/darkly-bootstrap.min.js')}
 %script{src: url('javascripts/datetimepicker.js')}
 %script{src: url('javascripts/main.js')}
 %script{src: url('javascripts/apocalypse.js')}

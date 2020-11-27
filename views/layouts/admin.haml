@@ -14,8 +14,9 @@
     #header
       = display_partial "layouts/admin/header"
   #content
+    = display_partial 'layouts/alert'
+
     .container
-      = display_partial 'layouts/alert' if messages.any?
       = yield
 
 %script{src: url('javascripts/jquery-3.4.1.min.js')}

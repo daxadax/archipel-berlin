@@ -1,0 +1,23 @@
+%section#login.container.mt-5
+  .container.fixed-vertical-center
+    .mx-auto.text-center.mt-5
+      %img.logo{src: 'https://cdn.shopify.com/s/files/1/0359/1028/7404/files/logo_web_2_600x600.png?v=1588080979'}
+
+    #login-form-content.text-center
+      - if @current_user
+        %h2= "You're logged in as #{@current_user.email}"
+        .row
+          %a.text-center.mx-auto.col-8.mt-3{href: '/organizations/dashboard'}
+            %button.btn.btn-block.btn-default Dashboard
+          %a.text-center.mx-auto.col-8.mt-3{href: '/logout'}
+            %button.btn.btn-block.btn-danger Log Out
+      - else
+        %form.center-aligned-form.mx-auto{action: 'login', method: 'post', role: 'form'}
+          %fieldset
+            %input.w-100.my-3.email{type: "email", name: "email", placeholder: "Email", required: true}
+            %input#password.w-100.my-3{type: "password", name: "password", placeholder: "Password", required: true}
+
+          %input.btn.btn-block.btn-outline-dark.my-3{role: 'button', type: 'submit', value: "Login"}
+          .small
+            Don't have an account?
+            %a{href: '/signup'} Create one now!

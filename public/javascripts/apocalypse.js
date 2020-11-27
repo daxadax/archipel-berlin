@@ -13,6 +13,79 @@ $(document).ready(function() {
   $('#form input').on('change', function() {
     setElementValidity(this);
   });
+
+
+  // this is currently an a/b thing. when the old version goes away it doesn't
+  // need to be 'new shit' anymore
+  $("#new-shit #pickup-location select").on('change', function () {
+    var selectedContact = $(this).val();
+    var contactSelect = $("#new-shit #pickup-contact select");
+
+    if ( selectedContact === '' ) { return }
+
+    // get contacts for the selected location and populate select box
+    $.ajax({
+      cache: false,
+      type: "GET",
+      url: "/utils/contact_options_for_location",
+      data: { "location_id": selectedContact },
+      success: function (data) {
+        contactSelect.html('');
+        JSON.parse(data).forEach(function(option, index, array) {
+          contactSelect.append($('<option></option>').val(option.id).html(option.name));
+        });
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        alert('Failed to retrieve contacts.');
+      }
+    });
+  });
+
+  $("#new-shit .delivery-location select").on('change', function () {
+    var selectedContact = $(this).val();
+
+    if ( selectedContact === '00' ) {
+      $(this.parentElement).siblings('.delivery-contact').addClass('hidden');
+      $(this.parentElement).siblings('.add-delivery-location').removeClass('hidden');
+      $(this.parentElement).siblings('.add-delivery-contact').removeClass('hidden');
+      return
+    } else {
+      var contactSelect = $(this.parentElement.nextElementSibling).find('select');
+
+      $(this.parentElement).siblings('.delivery-contact').removeClass('hidden');
+      $(this.parentElement).siblings('.add-delivery-location').addClass('hidden');
+      $(this.parentElement).siblings('.add-delivery-contact').addClass('hidden');
+
+      // get contacts for the selected location and populate select box
+      $.ajax({
+        cache: false,
+        type: "GET",
+        url: "/utils/contact_options_for_location",
+        data: { "location_id": selectedContact },
+        success: function (data) {
+          $(contactSelect).html('');
+          JSON.parse(data).forEach(function(option, index, array) {
+            $(contactSelect).append($('<option></option>').val(option.id).html(option.name));
+          });
+          contactSelect.append($('<option></option>').val('00').html('Add new contact'));
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+          alert('Failed to retrieve contacts.');
+        }
+      });
+    }
+  });
+
+  $("#new-shit .delivery-contact select").on('change', function () {
+    var selectedContact = $(this).val();
+        thisContactNode = $(this.parentNode.parentNode);
+
+    if ( selectedContact === '00' ) {
+      thisContactNode.siblings('.add-delivery-contact').removeClass('hidden');
+    } else {
+      thisContactNode.siblings('.add-delivery-contact').addClass('hidden');
+    };
+  });
 });
 
 function addItem(el) {
@@ -27,6 +100,8 @@ function addItem(el) {
 function addDeliveryRequest() {
   // don't trigger validations on click
   if ( event ) { event.preventDefault(); }
+
+  if ( $('#form #deliveries').length == 0 ) { return }
 
   var template = $('#form #deliveries .delivery-request-template').clone()
       newDelivery = template[0];
@@ -63,6 +138,8 @@ function removeLastDeliveryRequest() {
 };
 
 function submitData() {
+  event.preventDefault();
+
   // validate data
   for(key in data) {
     setElementValidity(document.getElementsByTagName('input'));
@@ -73,26 +150,30 @@ function submitData() {
 
   console.log(data);
 
-  // submit request if all elements are valid
-  if ( document.getElementsByClassName('error').length == 0 ) {
-    $.ajax({
-      url: "/apocalypse/request_pickup",
-      method: "POST",
-      data: data,
-      dataType: "html",
-      complete: function(xhr, textStatus) {
-        if ( xhr.status == 201 ) {
-          window.location = xhr.responseText
-        } else {
-          alert('uh-oh, something went wrong');
-        }
+  // return unless all elements are valid
+  if ( document.getElementsByClassName('error').length > 0 ) { return }
+
+  // submit request
+  $.ajax({
+    method: "POST",
+    url: "/apocalypse/request_pickup",
+    data: data,
+    dataType: "text",
+    complete: function(xhr, textStatus) {
+      if ( xhr.status == 201 ) {
+        window.location = xhr.responseText
+      } else {
+        alert('uh-oh, something went wrong');
       }
-    });
-  }
+    }
+  });
 }
 
 function collectFormData() {
-  var pickupLocation = mapInputElements($('#pickup-location input'));
+  var pickupLocationInput = mapInputElements($('#pickup-location input'));
+      pickupLocationSelect = mapInputElements($('#pickup-location select'));
+      pickupContactInput = mapInputElements($('#pickup-contact input'));
+      pickupContactSelect = mapInputElements($('#pickup-contact select'));
       invoiceLocation = mapInputElements($('#invoice-location input'));
       deliveryRequests = [];
 
@@ -100,17 +181,25 @@ function collectFormData() {
     var delivery = $('.delivery-request')[i];
 
     deliveryRequests.push({
-      delivery_location: mapInputElements($(delivery).find('.delivery-location input')),
+      delivery_location_input: mapInputElements($(delivery).
+        find('.add-delivery-location input')),
+      delivery_location_select: mapInputElements($(delivery).
+        find('.delivery-location select')),
+      delivery_contact_input: mapInputElements($(delivery).
+        find('.add-delivery-contact input')),
+      delivery_contact_select: mapInputElements($(delivery).
+        find('.delivery-contact select')),
       available_from: getDatetimepickerValue($(delivery).find('.available-from')),
       notes: $(delivery).find('.delivery-notes textarea')[0].value,
       items: collectItems($(delivery).find('.items-wrapper .item'))
     })
   };
 
-  console.log('delivery requests', deliveryRequests)
-
   return {
-    pickup_location: pickupLocation,
+    pickup_location_select: pickupLocationSelect,
+    pickup_location: pickupLocationInput,
+    pickup_contact_select: pickupContactSelect,
+    pickup_contact: pickupContactInput,
     invoice_location: invoiceLocation,
     deliveries: deliveryRequests
   }
@@ -132,8 +221,6 @@ function mapInputElements(elements) {
   for (let i = 0; i < elements.length; i++) {
     resultObject[elements[i].name] = elements[i].value;
   }
-
-  console.log('result', resultObject)
 
   return resultObject;
 }

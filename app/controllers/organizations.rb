@@ -41,12 +41,62 @@ class OrganizationsController < BaseController
   end
 
   get '/organizations/dashboard' do
-    organization = Apocalypse::Models::Organization[current_user.organization_id]
+    organization = current_user.organization
 
     if organization.nil?
       # 404 page
     else
-      display_page 'apocalypse/organizations/dashboard', organization: organization
+      display_page 'apocalypse/organizations/dashboard',
+        organization: organization,
+        layout: :organization_dashboard
+    end
+  end
+
+  get '/organizations/requests' do
+    organization = current_user.organization
+
+    if organization.nil?
+      # 404 page
+    else
+      display_page 'apocalypse/organizations/requests',
+        organization: organization,
+        layout: :organization_dashboard
+    end
+  end
+
+  get '/organizations/locations' do
+    organization = current_user.organization
+
+    if organization.nil?
+      # 404 page
+    else
+      display_page 'apocalypse/organizations/locations',
+        organization: organization,
+        layout: :organization_dashboard
+    end
+  end
+
+  get '/organizations/users' do
+    organization = current_user.organization
+
+    if organization.nil?
+      # 404 page
+    else
+      display_page 'apocalypse/organizations/users',
+        organization: organization,
+        layout: :organization_dashboard
+    end
+  end
+
+  get '/organizations/invoices' do
+    organization = current_user.organization
+
+    if organization.nil?
+      # 404 page
+    else
+      display_page 'apocalypse/organizations/invoices',
+        organization: organization,
+        layout: :organization_dashboard
     end
   end
 end

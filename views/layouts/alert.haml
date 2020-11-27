@@ -1,3 +1,8 @@
-#messages
-  - display_messages_and_reset_cache do |msg|
-    %h3.text-center= msg
+#notification.py-3.alert.hidden{data: {message: notification[:message], type: notification[:type]}}
+  .container
+    %h2.alert-heading
+    %hr
+    .message
+
+- clear_notification
+

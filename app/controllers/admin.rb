@@ -77,6 +77,20 @@ class AdminController < BaseController
       file.unlink
     end
 
+    patch '/delivery_requests/status' do
+      delivery_request = Apocalypse::Models::DeliveryRequest[params['id'].to_i]
+      return status 404 unless delivery_request
+
+      # TODO: make delivery request states as more robust solution
+      case params['status']
+      when 'confirm'
+        delivery_request.update(acknowledged_at: Time.now)
+      end
+
+      status 200
+      { message: 'status has been updated' }
+    end
+
     get '/login' do
       display_admin_page 'login', hide_header: true
     end
@@ -96,7 +110,9 @@ class AdminController < BaseController
         session['current_user'] = params['username']
         redirect 'admin/dashboard'
       else
-        messages << 'Login failed. Please contact administrator if you need help.'
+        notification[:type] = 'warning'
+        msg = 'Login failed. Please contact administrator if you need help'
+        notification[:message] = msg
         redirect 'admin/login'
       end
     end

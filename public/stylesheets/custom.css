@@ -30,6 +30,12 @@ input[type="date"] {
   line-height: unset;
 }
 
+#notification {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+}
+
 form.center-aligned-form {
   width: 50%;
   margin: 3em auto;

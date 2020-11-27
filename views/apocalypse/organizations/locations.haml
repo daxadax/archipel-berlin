@@ -1,0 +1,15 @@
+%section#locations.mt-5
+  %h2 Your Locations
+  %hr
+  - organization.locations.each do |location|
+    .row.pickup.align-items-center
+      .col-3= location.name
+      .col-4= location.full_address
+      .col-3= "#{location.contacts.count} contacts"
+      .col-2
+        edit
+        delete
+
+  #add-location.mt-5
+    %a{ href: "#" }
+      %button.btn.btn-block.btn-outline-dark Add a new Location

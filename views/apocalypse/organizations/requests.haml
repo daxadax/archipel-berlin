@@ -1,0 +1,22 @@
+%section#requests.mt-5
+  %h2 Previous delivery requests
+  %hr
+  - organization.delivery_requests.each do |request|
+    .row.pickup.align-items-center
+      .col-2.text-center
+        .small
+          .fas.fa-circle{ class: request.acknowledged? ? 'text-success' : 'text-warning' }
+          pending
+      .col-3
+        = request.pickup_location.name
+      .col-3
+        = "Requested by #{request.created_by.nickname}"
+        .small= request.created_at.strftime("%d %B %Y, %H:%M")
+      .col-2
+        .small
+          link to invoice
+
+  #request-delivery.mt-5
+    %a{ href: "/apocalypse/request_pickup" }
+      %button.btn.btn-block.btn-outline-dark Make a new delivery request
+
