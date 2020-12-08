@@ -29,7 +29,10 @@ class BaseController < Sinatra::Application
   end
 
   get '/' do
-    redirect '/apocalypse/request_pickup'
+    redirect '/login' unless logged_in?
+    redirect '/admin/dashboard' if current_user.super_user?
+
+    redirect '/organizations/dashboard'
   end
 
   get '/utils/contact_options_for_location' do
@@ -44,14 +47,11 @@ class BaseController < Sinatra::Application
 
   def authenticate!
     return if request.path_info =~ /stylesheets/
+    return if request.path_info == '/logout'
 
     set_current_user! && return if logged_in?
 
-    # TODO: this unless will go after users flow fully implemented
-    return if request.path_info == '/apocalypse/request_pickup'
-
     return if request.path_info == '/login'
-    return if request.path_info == '/admin/login'
     return if request.path_info == '/signup'
 
     redirect '/login'

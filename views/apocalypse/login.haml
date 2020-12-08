@@ -8,9 +8,9 @@
         %h2= "You're logged in as #{@current_user.email}"
         .row
           %a.text-center.mx-auto.col-8.mt-3{href: '/organizations/dashboard'}
-            %button.btn.btn-block.btn-default Dashboard
+            %button.btn.btn-block.btn-outline-dark Dashboard
           %a.text-center.mx-auto.col-8.mt-3{href: '/logout'}
-            %button.btn.btn-block.btn-danger Log Out
+            %button.btn.btn-block.btn-outline-danger Log Out
       - else
         %form.center-aligned-form.mx-auto{action: 'login', method: 'post', role: 'form'}
           %fieldset

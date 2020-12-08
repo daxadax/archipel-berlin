@@ -7,14 +7,23 @@ class UsersController < BaseController
     user = Apocalypse::Models::User.find(email: params[:email])
 
     if user && BCrypt::Password.new(user.password_digest) == params['password']
-      session[:user_id] = user.external_id
+      session['user_id'] = user.external_id
       set_current_user!
-      redirect '/organizations/dashboard'
+      if user.super_user?
+        redirect '/admin/dashboard'
+      else
+        redirect '/organizations/dashboard'
+      end
     else
       notification[:type] = 'warning'
       notification[:message] = 'That user doesn\'t exist in our system'
       display_page 'apocalypse/login'
     end
+  end
+
+  get '/logout' do
+    session.clear
+    redirect '/login'
   end
 
   get '/signup' do
@@ -47,7 +56,7 @@ class UsersController < BaseController
     # save user and redirect to next page
     else
       user.save
-      session[:user_id] = user.external_id
+      session['user_id'] = user.external_id
       set_current_user!
 
       if params[:signup_type] == 'create'
