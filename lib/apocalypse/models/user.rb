@@ -7,6 +7,10 @@ module Apocalypse
         !!administrator
       end
 
+      def super_user?
+        !!super_user
+      end
+
       def organization
         Apocalypse::Models::Organization[organization_id]
       end
