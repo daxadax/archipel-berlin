@@ -1,8 +1,7 @@
 class AdminController < BaseController
   namespace '/admin' do
     before do
-      logger.info "Authenticating request"
-      authenticate!
+      authenticate_admin!
       set_current_user!
     end
 
@@ -90,31 +89,12 @@ class AdminController < BaseController
       status 200
       { message: 'status has been updated' }
     end
+  end
 
-    get '/login' do
-      display_admin_page 'login', hide_header: true
-    end
+  private
 
-    get '/logout' do
-      session['current_user'] = nil
-      redirect 'admin/login'
-    end
-
-    post '/login' do
-      logger.info "Processing login for user #{params['username']}"
-
-      user_key = ENV[params['username'].upcase]
-      auth_key = params['password']
-
-      if user_key == auth_key
-        session['current_user'] = params['username']
-        redirect 'admin/dashboard'
-      else
-        notification[:type] = 'warning'
-        msg = 'Login failed. Please contact administrator if you need help'
-        notification[:message] = msg
-        redirect 'admin/login'
-      end
-    end
+  def authenticate_admin!
+    redirect '/login' unless current_user.super_user?
+    authenticate!
   end
 end
