@@ -1,20 +1,22 @@
 %section#requests.mt-5
   %h2 Previous delivery requests
   %hr
-  - organization.delivery_requests.each do |request|
-    .row.pickup.align-items-center
-      .col-2.text-center
-        .small
-          .fas.fa-circle{ class: request.acknowledged? ? 'text-success' : 'text-warning' }
-          pending
-      .col-3
-        = request.pickup_location.name
-      .col-3
-        = "Requested by #{request.created_by.nickname}"
-        .small= request.created_at.strftime("%d %B %Y, %H:%M")
-      .col-2
-        .small
-          link to invoice
+  %table.table
+    %thead
+      %th Status
+      %th Requested By
+      %th Pickup location
+      %th Delivery location
+      %th Created at
+    %tbody
+      // TODO: need to do some sql query here or this is gonna get heavy
+      - organization.delivery_requests.flat_map(&:deliveries).reverse.each do |d|
+        %tr.delivery-request
+          %td= display_partial "apocalypse/utils/delivery_request_status", delivery_request: d.delivery_request
+          %td= d.delivery_request.created_by.nickname
+          %td= d.delivery_request.pickup_location.name
+          %td= d.location.name
+          %td= d.delivery_request.created_at.strftime("%d %B %Y, %H:%M")
 
   #request-delivery.mt-5
     %a{ href: "/apocalypse/request_pickup" }

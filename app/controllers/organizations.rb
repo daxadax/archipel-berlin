@@ -23,7 +23,7 @@ class OrganizationsController < BaseController
       city: params['location_city']
     )
 
-    contact = Apocalypse::Models::Contact.create(
+    Apocalypse::Models::Contact.create(
       location_id: location.id,
       name: params['contact_name'],
       email: params['contact_email'],
@@ -74,6 +74,67 @@ class OrganizationsController < BaseController
         organization: organization,
         layout: :organization_dashboard
     end
+  end
+
+  get '/organizations/locations/new' do
+    display_page 'apocalypse/organizations/locations/new'
+  end
+
+  post '/organizations/locations/new' do
+    location = Apocalypse::Models::Location.create(
+      organization_id: current_user.organization.id,
+      name: params['name'],
+      address: params['address'],
+      zip: params['zip'],
+      city: params['city']
+    )
+
+    Apocalypse::Models::Contact.create(
+      location_id: location.id,
+      name: params['contact_name'],
+      email: params['contact_email'],
+      phone: params['contact_phone']
+    )
+
+    status 201
+    redirect "/organizations/locations"
+  end
+
+  get '/organizations/locations/:id' do
+    location = Apocalypse::Models::Location[params['id']]
+    display_page 'apocalypse/organizations/locations/location',
+      organization: current_user.organization,
+      location: location,
+      layout: :organization_dashboard
+  end
+
+  put '/organizations/locations/:id' do
+    location = Apocalypse::Models::Location[params.delete('id')]
+    location.update(params)
+
+    status 200
+
+    {
+      name: location.name,
+      address: location.full_address
+    }
+  end
+
+  get '/organizations/locations/:id/contacts/new' do
+    display_page 'apocalypse/organizations/locations/add_contact',
+      location_id: params['id']
+  end
+
+  post '/organizations/locations/:id/contacts/new' do
+    Apocalypse::Models::Contact.create(
+      location_id: params['id'],
+      name: params['name'],
+      email: params['email'],
+      phone: params['phone']
+    )
+
+    status 201
+    redirect "/organizations/locations"
   end
 
   get '/organizations/users' do

@@ -2,18 +2,17 @@
   %h2 Users
   %hr
   - organization.users.each do |user|
-    .row.pickup.align-items-center
-      .col-1.text-center
+    %ol
+      %li
+        = user.nickname
         - if user.admin?
           .fas.fa-crown{ title: 'Admin user' }
-      .col-3
-        = user.nickname
-        .small= user.email
-      .col-4= user.created_at.to_s
-      .col-2
-        edit
-        - unless user.admin?
-          delete
+        %span
+          .small= user.email
+        -# .col-2
+             edit
+             - if user.admin? and user != current_user
+               delete
 
   #add-user.mt-5
     %a{ href: "#" }

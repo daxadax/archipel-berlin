@@ -15,11 +15,9 @@ $(document).ready(function() {
   });
 
 
-  // this is currently an a/b thing. when the old version goes away it doesn't
-  // need to be 'new shit' anymore
-  $("#new-shit #pickup-location select").on('change', function () {
+  $("#pickup-location select").on('change', function () {
     var selectedContact = $(this).val();
-    var contactSelect = $("#new-shit #pickup-contact select");
+    var contactSelect = $("#pickup-contact select");
 
     if ( selectedContact === '' ) { return }
 
@@ -41,10 +39,10 @@ $(document).ready(function() {
     });
   });
 
-  $("#new-shit .delivery-location select").on('change', function () {
-    var selectedContact = $(this).val();
+  $(".delivery-requests .delivery-location select").on('change', function () {
+    var selectedLocation = $(this).val();
 
-    if ( selectedContact === '00' ) {
+    if ( selectedLocation === '00' ) {
       $(this.parentElement).siblings('.delivery-contact').addClass('hidden');
       $(this.parentElement).siblings('.add-delivery-location').removeClass('hidden');
       $(this.parentElement).siblings('.add-delivery-contact').removeClass('hidden');
@@ -61,7 +59,7 @@ $(document).ready(function() {
         cache: false,
         type: "GET",
         url: "/utils/contact_options_for_location",
-        data: { "location_id": selectedContact },
+        data: { "location_id": selectedLocation },
         success: function (data) {
           $(contactSelect).html('');
           JSON.parse(data).forEach(function(option, index, array) {
@@ -76,7 +74,7 @@ $(document).ready(function() {
     }
   });
 
-  $("#new-shit .delivery-contact select").on('change', function () {
+  $(".delivery-contact select").on('change', function () {
     var selectedContact = $(this).val();
         thisContactNode = $(this.parentNode.parentNode);
 
@@ -92,7 +90,8 @@ function addItem(el) {
   // don't trigger validations
   event.preventDefault();
 
-  var template = $('.row.item').clone()[0]
+  // clone(true) preserves event handlers
+  var template = $('.row.item').clone(true)[0]
 
   el.closest('.row').previousElementSibling.append(template);
 };
@@ -103,16 +102,27 @@ function addDeliveryRequest() {
 
   if ( $('#form #deliveries').length == 0 ) { return }
 
-  var template = $('#form #deliveries .delivery-request-template').clone()
+  // clone(true) preserves event handlers
+  var template = $('#form #deliveries .delivery-request-template').clone(true)
       newDelivery = template[0];
       deliveryIndex = $('#delivers .delivery-request').length;
+      earliestAvailable = getFirstAvailableDate(new Date());
 
   $('#form #deliveries .delivery-requests').append(newDelivery);
 
   // set datetime picker options
   $(newDelivery).find('.available-from').datetimepicker({
     inline: true,
+    minDate: earliestAvailable,
+    defaultDate: earliestAvailable,
     defaultTime: '10:00'
+  });
+
+  $(newDelivery).find('.deadline').datetimepicker({
+    inline: true,
+    minDate: getFirstAvailableDate(new Date(earliestAvailable)),
+    defaultDate: getFirstAvailableDate(new Date(earliestAvailable)),
+    defaultTime: '17:00'
   });
 
   newDelivery.classList.remove('hidden', 'delivery-request-template');
@@ -123,6 +133,18 @@ function addDeliveryRequest() {
     $('#form #remove-last-location').removeClass('hidden');
   }
 };
+
+function getFirstAvailableDate(d) {
+  console.log(d);
+
+  if ( d.getDay() >= 5 ) {
+    newDate = new Date(d.setDate(d.getDate() + (7 - d.getDay()) % 7 + 1));
+  } else {
+    newDate = new Date(d.setDate(d.getDate() + 1));
+  }
+
+  return newDate.yyyymmdd();
+}
 
 function removeLastDeliveryRequest() {
   // don't trigger validations
@@ -148,8 +170,6 @@ function submitData() {
   // serialize data
   var data = collectFormData();
 
-  console.log(data);
-
   // return unless all elements are valid
   if ( document.getElementsByClassName('error').length > 0 ) { return }
 
@@ -163,7 +183,7 @@ function submitData() {
       if ( xhr.status == 201 ) {
         window.location = xhr.responseText
       } else {
-        alert('uh-oh, something went wrong');
+        alert('Uh-oh, something went wrong, please contact us!');
       }
     }
   });

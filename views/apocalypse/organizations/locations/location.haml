@@ -1,0 +1,25 @@
+%section#location.mt-5
+  %h2= location.name
+  %h4.my-3= location.full_address
+  %hr
+
+  - if location.contacts.count.zero?
+    .text-center No contacts exist for this location
+  - else
+    %table.table
+      %thead
+        %th Name
+        %th Email
+        %th Phone
+        %th
+      %tbody
+        - location.contacts.each do |contact|
+          %tr.contact
+            %td= contact.name
+            %td= contact.email
+            %td= contact.phone
+            %td
+
+  .mt-5
+    %a{href: "/organizations/locations/#{location.id}/contacts/new"}
+      %button.btn.btn-block.btn-outline-dark Add a new contact
