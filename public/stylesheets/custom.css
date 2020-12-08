@@ -21,6 +21,10 @@ nav a:focus {
   display: none;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .upcase {
   text-transform: uppercase;
 }
@@ -28,4 +32,20 @@ nav a:focus {
 /* overwrite style from darkly.css */
 input[type="date"] {
   line-height: unset;
+}
+
+#notification {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+}
+
+form.center-aligned-form {
+  width: 50%;
+  margin: 3em auto;
+  background-size: cover;
+}
+
+form.center-aligned-form input {
+  padding-left: 7px;
 }

@@ -1,0 +1,64 @@
+%section#add-location.container.mt-5
+  %form#form.center-aligned-form{role: 'form', action: "/organizations/locations/new", method: "post"}
+    .form-group.form-stage{data: { position: 0 } }
+      %h2.mx-auto Add a location
+      %p.small This address will be used when requesting pickups.
+      %hr
+
+      %fieldset#location-information
+        %input.w-100.my-3.name{type: "text", name: "name", placeholder: 'name', required: true}
+        %input.w-100.my-3{type: "text", name: "address", placeholder: 'address', required: true}
+        %input.w-100.my-3{type: "text", name: "zip", placeholder: 'zip code', required: true}
+        %input.w-100.my-3{type: "text", name: "city", value: "Berlin", readonly: true}
+
+      %button.btn.btn-block.btn-outline-dark.btn-next{type: 'button'} Next
+
+    .form-group.form-stage.hidden{data: { position: 1 } }
+      %h2.mx-auto Location contact
+      %p.small This information will be used by our riders when we pickup orders.
+      %hr
+
+      %fieldset
+        %input.w-100.my-3{type: "text", name: "contact_name", placeholder: 'Name', required: true}
+        %input.w-100.my-3{type: "email", name: "contact_email", placeholder: 'Email', required: true}
+        %input.w-100.my-3{type: "text", name: "contact_phone", placeholder: 'Phone', required: true}
+
+      %button.btn.btn-block.btn-outline-dark.btn-prev{type: 'button'} Previous
+      %button.btn.btn-block.btn-outline-dark{type: 'submit'} Submit
+
+:javascript
+  var formNextButton = $('#form .form-stage .btn-next');
+      formPrevButton = $('#form .form-stage .btn-prev');
+
+  // if section is valid, move to the next section
+  formNextButton.on('click', function(){
+    var section = $(this).parent('.form-stage')
+        position = section.data('position')
+
+    if ( position != 0 ) {
+      section.find(":input").each(function(index, input) {
+        // reset validity
+        input.classList.remove('error');
+
+        if ( input.checkValidity() == false ) {
+          input.classList.add('error');
+        }
+      })
+
+      if ( position != 0 && section.find('.error').length > 0 ) { return }
+    };
+
+    var nextSection = parseInt(position) + 1
+
+    $('#form .form-stage').addClass('hidden');
+    $('.form-stage[data-position='+ nextSection +']').removeClass('hidden');
+  });
+
+  // move to the previous section
+  formPrevButton.on('click', function(){
+    var section = $(this).parent('.form-stage').data('position');
+    var prevSection = parseInt(section) - 1
+
+    $('#form .form-stage').addClass('hidden');
+    $('.form-stage[data-position='+ prevSection +']').removeClass('hidden');
+  });

@@ -8,4 +8,3 @@ Sequel::Model.plugin :update_or_create
 
 require './lib/archipel_berlin.rb'
 require './lib/apocalypse.rb'
-require './archipel_berlin_app'

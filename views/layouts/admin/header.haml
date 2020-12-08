@@ -1,5 +1,5 @@
 %ul.list-inline.text-right.p-3
-  .list-inline-item.name= "logged in as <strong>#{@current_user}</strong>"
-  %a.list-inline-item{href: '/admin/logout'}
+  .list-inline-item.name= "logged in as <strong>#{@current_user.nickname}</strong>"
+  %a.list-inline-item{href: '/logout'}
     %button.btn.btn-default Log Out
 

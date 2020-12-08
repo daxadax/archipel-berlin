@@ -1,0 +1,6 @@
+meeting 27 november
+ ~~add delivery deadline to deliveries~~
+ * confirmation stack / statuses
+ * slack notifications on archipel
+ * mailchimp -> mandrill integration for sending mail
+ * filters on admin (see all pending requests, all confirmed, last week, etc)

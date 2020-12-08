@@ -19,7 +19,8 @@ module Services
       end
     end
 
-    def self.notify_error(message:, backtrace:)
+    # NOTE: error is only used in mock for development
+    def self.notify_error(message:, backtrace:, error:)
       new.notify_error(message, backtrace)
     end
 

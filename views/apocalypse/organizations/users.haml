@@ -1,0 +1,19 @@
+%section#users.mt-5
+  %h2 Users
+  %hr
+  - organization.users.each do |user|
+    %ol
+      %li
+        = user.nickname
+        - if user.admin?
+          .fas.fa-crown{ title: 'Admin user' }
+        %span
+          .small= user.email
+        -# .col-2
+             edit
+             - if user.admin? and user != current_user
+               delete
+
+  #add-user.mt-5
+    %a{ href: "#" }
+      %button.btn.btn-block.btn-outline-dark Add a new User

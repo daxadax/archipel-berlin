@@ -7,6 +7,10 @@
     %p
       We've received your pickup request! Thanks!
 
+    - if current_user
+      %a.btn.btn-block.btn-outline-dark.my-3{href: '/organizations/dashboard'}
+        Go to dashboard
+
     %p
       Please note that this service is in beta, so there might be some bugs here and there.
 

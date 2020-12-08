@@ -1,0 +1,101 @@
+%section#organization-signup.container.mt-5
+  %form#form.center-aligned-form{role: 'form', action: "/organizations/new", method: "post"}
+    .form-group.form-stage{data: { position: 0 } }
+      %h2 Congratulations!
+      %p.small Your account has been created successfully.
+      %hr
+
+      %p We need a few more details about your organization to finish your registration
+
+      %button.btn.btn-block.btn-outline-dark.btn-next{role: 'button', type: 'button'}
+        Next
+
+    .form-group.form-stage.hidden{data: { position: 1 } }
+      %h2.mx-auto Organization details
+      %p.small This will be used to refer to your organization and create invoices
+      %hr
+
+      %fieldset#organization-information
+        %input.w-100.my-3.name{type: "text", name: "org_name", placeholder: "Organization name", required: true}
+        %input.w-100.my-3{type: "text", name: "org_address", placeholder: "Address", required: true}
+        %input.w-100.my-3{type: "text", name: "org_zip", placeholder: "Zip code", required: true}
+        %input.w-100.my-3{type: "text", name: "org_city", value: "Berlin", required: true}
+
+      %button.btn.btn-block.btn-outline-dark.btn-next{type: 'button'} Next
+
+    .form-group.form-stage.hidden{data: { position: 2 } }
+      %h2.mx-auto Your location
+      %p.small This address will be used when requesting pickups.
+      %p.small Have more than one location? Don't worry, you can add additional locations from your user dashboard at any time.
+      %hr
+
+      %fieldset#location-information
+        %input.w-100.my-3.name{type: "text", name: "location_name", required: true}
+        %input.w-100.my-3{type: "text", name: "location_address", required: true}
+        %input.w-100.my-3{type: "text", name: "location_zip", required: true}
+        %input.w-100.my-3{type: "text", name: "location_city", value: "Berlin", required: true}
+
+      %button.btn.btn-block.btn-outline-dark.btn-prev{type: 'button'} Previous
+      %button.btn.btn-block.btn-outline-dark.btn-next{type: 'button'} Next
+
+    .form-group.form-stage.hidden{data: { position: 3 } }
+      %h2.mx-auto Your contact information
+      %p.small This information will be used by our riders when we pickup orders.
+      %p.small Additional contacts can be added from your user dashboard at any time.
+      %hr
+
+      %fieldset
+        %input.w-100.my-3{type: "text", name: "contact_name", placeholder: 'Name', required: true}
+        %input.w-100.my-3{type: "email", name: "contact_email", placeholder: 'Email', required: true}
+        %input.w-100.my-3{type: "text", name: "contact_phone", placeholder: 'Phone', required: true}
+
+      %button.btn.btn-block.btn-outline-dark.btn-prev{type: 'button'} Previous
+      %button.btn.btn-block.btn-outline-dark{type: 'submit'} Submit
+
+:javascript
+  var formNextButton = $('#form .form-stage .btn-next');
+      formPrevButton = $('#form .form-stage .btn-prev');
+
+  // if section is valid, move to the next section
+  formNextButton.on('click', function(){
+    var section = $(this).parent('.form-stage')
+        position = section.data('position')
+
+    if ( position != 0 ) {
+      section.find(":input").each(function(index, input) {
+        // reset validity
+        input.classList.remove('error');
+
+        if ( input.checkValidity() == false ) {
+          input.classList.add('error');
+        }
+      })
+
+      if ( position != 0 && section.find('.error').length > 0 ) { return }
+    };
+
+    var nextSection = parseInt(position) + 1
+
+    $('#form .form-stage').addClass('hidden');
+    $('.form-stage[data-position='+ nextSection +']').removeClass('hidden');
+  });
+
+  // move to the previous section
+  formPrevButton.on('click', function(){
+    var section = $(this).parent('.form-stage').data('position');
+    var prevSection = parseInt(section) - 1
+
+    $('#form .form-stage').addClass('hidden');
+    $('.form-stage[data-position='+ prevSection +']').removeClass('hidden');
+  });
+
+  // copy organization information to location informatiion
+  $('#organization-information input').on('change', function() {
+    var locationInputElement = this.attributes.name.value.replace('org', 'location');
+        locationInput = document.getElementsByName(locationInputElement)[0];
+
+    // don't overwrite existing values
+    if ( !locationInput.value === null && !locationInput.value === '' ) { return }
+
+    locationInput.value = this.value;
+  });

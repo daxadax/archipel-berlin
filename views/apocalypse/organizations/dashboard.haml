@@ -1,0 +1,28 @@
+%section#dashboard.mt-5
+  %h2 Pending delivery requests
+  %hr
+  - organization.locations.each do |location|
+    %h4.my-3= location.full_address
+    - if location.pending_pickups.any?
+      %table.table
+        %thead
+          %th Status
+          %th Requested By
+          %th Available From
+          %th Delivery Location
+          %th Items
+        %tbody
+          -# TODO: this is gross and weird
+          - location.pending_pickups.flat_map(&:deliveries).reverse.each do |d|
+            %tr.delivery-request
+              %td= display_partial "apocalypse/utils/delivery_request_status", delivery_request: d.delivery_request
+              %td= d.delivery_request.created_by.nickname
+              %td= d.available_from.strftime("%d %B %Y, %H:%M")
+              %td= d.location.name
+              %td= "#{d.items.count} item(s)"
+    - else
+      no pending pickups at this location
+
+  #request-delivery.mt-5
+    %a{ href: "/apocalypse/request_pickup" }
+      %button.btn.btn-block.btn-outline-dark Make a new delivery request

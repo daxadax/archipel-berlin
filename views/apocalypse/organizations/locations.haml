@@ -1,0 +1,88 @@
+%section#locations.mt-5
+  %h2 Your Locations
+  %hr
+  %table.table
+    %thead
+      %th Name
+      %th Address
+      %th Contacts
+      %th
+    %tbody
+      - organization.locations.each do |location|
+        %tr.location
+          %td.name
+            %a{href: "/organizations/locations/#{location.id}"}= location.name
+          %td.address= location.full_address
+          %td.contacts= location.contacts.count
+          %td
+            %a{href: "/organizations/locations/#{location.id}/contacts/new", style: 'color: unset;'}
+              .fas.fa-user-plus.cursor-pointer{title: 'add contact'}
+            .fas.fa-edit.cursor-pointer{title: 'edit location'}
+            .fas.fa-times.cursor-pointer{title: 'delete location'}
+        %tr.edit-location.hidden
+          %td{colspan: 100}
+            %h4 Edit location
+            %hr
+
+            .row
+              .name.m-3
+                %label.control-label Name
+                %input.form-control{type: 'text', name: 'name', value: location.name}
+
+              .address.m-3
+                %label.control-label Address
+                %input.form-control{type: 'text', name: 'address', value: location.address}
+
+              .zip.m-3
+                %label.control-label Zip
+                %input.form-control{type: 'text', name: 'zip', value: location.zip}
+
+              .zip.m-3
+                %label.control-label City
+                %input.form-control{type: 'text', readonly: true, value: location.city}
+
+            .row
+              .cancel-update.col-6
+                %button.btn.btn-block.btn-outline-danger{onclick: "cancelUpdate(this);"}
+                  Cancel
+              .update-location.col-6
+                %button.btn.btn-block.btn-outline-success{onclick: "updateLocation(this, #{location.id});"}
+                  Update location
+
+  #add-location.mt-5
+    %a{ href: "/organizations/locations/new" }
+      %button.btn.btn-block.btn-outline-dark Add a new Location
+
+:javascript
+  $('table td .fa-edit').on('click', function() {
+    $(this).closest('tr').addClass('hidden');
+    $(this).closest('tr').next().removeClass('hidden');
+  });
+
+  function cancelUpdate(el) {
+    var editRow = $(el).closest('tr');
+        locationRow = editRow.prev();
+
+    editRow.addClass('hidden');
+    locationRow.removeClass('hidden');
+  };
+
+  function updateLocation(el, locationId) {
+    var data = {}
+        editRow = $(el).closest('tr');
+        locationRow = editRow.prev();
+
+    editRow.find('input').each(function(index, input) {
+      data[input.attributes.name.textContent] = input.value;
+    });
+
+    $.ajax({
+      url: '/organizations/locations/'+locationId,
+      method: 'put',
+      data: data,
+      error: function(errorMsg) {
+        notify(errorMsg, 'danger');
+      },
+      success: window.location.reload()
+    })
+  }

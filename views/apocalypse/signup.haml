@@ -1,0 +1,44 @@
+%section#signup.container.mt-5
+  %h2 Create an Account
+  %hr.mb-5
+    %form#form.center-aligned-form{role: 'form', action: "/signup", method: "post"}
+      %fieldset
+        %input.w-100.my-3.email{type: "email", name: "email", placeholder: "Email", required: true}
+        %input#password.w-100.my-3{type: "password", name: "password", placeholder: "Password", required: true}
+        %input#password-confirmation.w-100.my-3{type: "password", name: "password_confirmation", placeholder: "Confirm Password", required: true}
+        %label.checkbox.terms.anim
+          %input.checkbox{type: "checkbox", required: true}
+          %span I agree to the Terms & Conditions
+        .clear
+
+        %h4.mt-3 Please choose an option:
+
+        #signup-type
+          .row.mt-3.mb-3
+            .col-6
+              %label
+                %input{type: "radio", name: 'signup_type', required: true, value: 'create'}
+                I want to create a new organization
+              .validation-msg.hidden
+            .col-6
+              %label
+                %input{type: "radio", name: 'signup_type', required: true, value: 'join'}
+                I want to join an existing organization
+              .validation-msg.hidden
+
+        %input.btn.btn-block.btn-outline-dark.my-5{role: 'button', type: 'submit', value: "SIGNUP"}
+
+:javascript
+  var password = document.getElementById("password");
+      confirm_password = document.getElementById("password-confirmation");
+
+  function validatePassword(){
+    if(password.value != confirm_password.value) {
+      confirm_password.setCustomValidity("Passwords Don't Match");
+    } else {
+      confirm_password.setCustomValidity('');
+    }
+  }
+
+  password.onchange = validatePassword;
+  confirm_password.onkeyup = validatePassword;

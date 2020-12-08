@@ -17,9 +17,21 @@ Sequel::Model.plugin :update_or_create
 
 require './lib/archipel_berlin.rb'
 require './lib/apocalypse.rb'
-require './archipel_berlin_app'
 
 require 'securerandom'
 set :session_secret, ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
 
-run ArchipelBerlinApp
+require './app/controllers/base.rb'
+Dir.glob('./app/controllers/*.rb') { |f| require f }
+
+# Access Sinatra Middleware's functionality
+# Allows us to use PATCH PUT DELETE requests
+use Rack::MethodOverride
+
+# Mount additional controllers
+use AdminController
+use UsersController
+use OrganizationsController
+use DeliveryRequestsController
+
+run BaseController

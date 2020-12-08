@@ -1,0 +1,13 @@
+%section#add-location.container.mt-5
+  %form#form.center-aligned-form{role: 'form', action: "/organizations/locations/#{location_id}/contacts/new", method: "post"}
+    .form-group
+      %h2.mx-auto Location contact
+      %p.small This information will be used by our riders when we pickup orders.
+      %hr
+
+      %fieldset
+        %input.w-100.my-3{type: "text", name: "name", placeholder: 'Name', required: true}
+        %input.w-100.my-3{type: "email", name: "email", placeholder: 'Email', required: true}
+        %input.w-100.my-3{type: "text", name: "phone", placeholder: 'Phone', required: true}
+
+      %button.btn.btn-block.btn-outline-dark{type: 'submit'} Submit

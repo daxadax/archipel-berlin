@@ -1,0 +1,15 @@
+#sidebar
+  #sidebar-wrapper.bg-light.border-right
+    .sidebar-heading
+      %h4= organization.name
+    .list-group.list-group-flush
+      %a#dashboard-link.list-group-item.list-group-item-action.bg-light{href: '/organizations/dashboard'}
+        Dashboard
+      %a#requests-link.list-group-item.list-group-item-action.bg-light{href: '/organizations/requests'}
+        Previous Requests
+      %a#locatiions-link.list-group-item.list-group-item-action.bg-light{href: '/organizations/locations'}
+        Locations
+      %a#users-link.list-group-item.list-group-item-action.bg-light{href: '/organizations/users'}
+        Users
+      %a#invoices-link.list-group-item.list-group-item-action.bg-light{href: '/organizations/invoices'}
+        Invoices

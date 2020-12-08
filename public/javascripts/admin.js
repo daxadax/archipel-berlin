@@ -32,3 +32,18 @@ function toggleDeliveryRequest(e) {
   detailsRow = e.closest('tr').nextElementSibling;
   $(detailsRow).toggleClass('hidden');
 }
+
+function updateDeliveryStatus(id, statusString) {
+  console.log(id, status);
+  $.ajax({
+    url: '/admin/delivery_requests/status',
+    method: 'patch',
+    data: {
+      id: id,
+      status: statusString
+    },
+    success: function(data) {
+      notify(data.message);
+    }
+  })
+}
