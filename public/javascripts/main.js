@@ -41,3 +41,14 @@ function getTitleForType(type) {
     default: return "Heads up!";
   }
 }
+
+// https://stackoverflow.com/a/3067896/2128691
+Date.prototype.yyyymmdd = function() {
+  var mm = this.getMonth() + 1; // getMonth() is zero-based
+  var dd = this.getDate();
+
+  return [this.getFullYear(),
+          (mm>9 ? '' : '0') + mm,
+          (dd>9 ? '' : '0') + dd
+         ].join('/');
+};

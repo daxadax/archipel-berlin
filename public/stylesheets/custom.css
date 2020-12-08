@@ -21,6 +21,10 @@ nav a:focus {
   display: none;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .upcase {
   text-transform: uppercase;
 }
