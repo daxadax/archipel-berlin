@@ -37,13 +37,15 @@ module ArchipelBerlin
   MITTE_ZIPCODES = [/101\d{2}/, /104\d{2}/].freeze
   XBERG_ZIPCODES = [/109\d{2}/, /12047/].freeze
   NKOLN_ZIPCODES = [/120\d{2}/, /^((?!12047).)*$/].freeze
+  SBERG_ZIPCODES = [10777,10781,10823,10827,10965,10779,10783,10789,10829].freeze
 
   ROUTE_MAPPING = {
     albatross_catering: { tag: ['Catering'] },
     friedrichshain: { zip_code: FHAIN_ZIPCODES },
     mitte: { zip_code: MITTE_ZIPCODES },
     kreuzberg: { zip_code: XBERG_ZIPCODES },
-    neukölln: { zip_code: NKOLN_ZIPCODES }
+    neukölln: { zip_code: NKOLN_ZIPCODES },
+    schöneberg: { zip_code: SBERG_ZIPCODES }
   }
 
   PICKUP_LOCATIONS = [
