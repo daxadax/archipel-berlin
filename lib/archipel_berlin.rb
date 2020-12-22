@@ -41,11 +41,12 @@ module ArchipelBerlin
 
   ROUTE_MAPPING = {
     albatross_catering: { tag: ['Catering'] },
+    schöneberg: { tag: ['Schoneberg'] },
     friedrichshain: { zip_code: FHAIN_ZIPCODES },
     mitte: { zip_code: MITTE_ZIPCODES },
     kreuzberg: { zip_code: XBERG_ZIPCODES },
     neukölln: { zip_code: NKOLN_ZIPCODES },
-    schöneberg: { zip_code: SBERG_ZIPCODES }
+    # schöneberg: { zip_code: SBERG_ZIPCODES }
   }
 
   PICKUP_LOCATIONS = [
