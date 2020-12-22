@@ -89,7 +89,10 @@ module ArchipelBerlin
             when :tag
               matchers.any? { |matcher| tags.include?(matcher) }
             when :zip_code
-              matchers.any? { |matcher| zip_code.match?(matcher) }
+              matchers.any? do |matcher|
+                zip_code.match?(matcher) if matcher.class.name == 'Regexp'
+                zip_code.to_i == matcher if matcher.class.name == 'Integer'
+              end
             end
           end
         end
