@@ -59,7 +59,7 @@
                     %u.strong.w-100 Orders by Pickup Hub
                     %ul.orders-by-pickup-hub
                       - summary['orders_by_hub'].each do |hub, orders|
-                        %li= "#{hub.capitalize}: #{orders} orders"
+                        %li= "#{hub&.capitalize}: #{orders} orders"
 
               .col
                 %u.strong Items by Vendor
