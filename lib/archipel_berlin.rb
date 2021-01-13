@@ -54,6 +54,7 @@ module ArchipelBerlin
     'ROCKET HUB',
     'ALBATROSS HUB',
     'ARCHI HUB',
-    'HALASCHES HUB'
+    'HALASCHES HUB',
+    'HERBIE HUB'
   ]
 end

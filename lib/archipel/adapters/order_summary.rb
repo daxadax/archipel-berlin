@@ -70,9 +70,21 @@ module ArchipelBerlin
       end
 
       def orders_by_route
-        @orders_by_route ||= orders.group_by(&:delivery_route).
+        @orders_by_route ||= orders.select(&:for_delivery?).
+          group_by(&:delivery_route).
           inject({}) do |result, (route, orders)|
             result[route] = orders.count
+            result
+          end.
+          sort_by(&:last).
+          reverse
+      end
+
+      def pickup_orders_by_hub
+        @pickup_orders_by_hub ||= orders.select(&:for_pickup?).
+          group_by(&:pickup_location).
+          inject({}) do |result, (hub, orders)|
+            result[hub] = orders.count
             result
           end.
           sort_by(&:last).
@@ -100,7 +112,8 @@ module ArchipelBerlin
           routes: items.map(&:delivery_route).uniq,
           orders_by_zip_code: orders_by_zip_code,
           items_by_vendor: items_by_vendor,
-          orders_by_route: orders_by_route
+          orders_by_route: orders_by_route,
+          orders_by_hub: pickup_orders_by_hub
         }
       end
     end

@@ -48,10 +48,18 @@
                     %li= "#{zip_code}: #{orders} orders"
 
               .col
-                %u.strong Orders by Route
-                %ul.orders-by-route
-                  - summary['orders_by_route'].each do |route, orders|
-                    %li= "#{route.capitalize}: #{orders} orders"
+                .row
+                  %u.strong.w-100 Orders by Route
+                  %ul.orders-by-route
+                    - summary['orders_by_route'].each do |route, orders|
+                      %li= "#{route.capitalize}: #{orders} orders"
+
+                - if summary['orders_by_hub']
+                  .row
+                    %u.strong.w-100 Orders by Pickup Hub
+                    %ul.orders-by-pickup-hub
+                      - summary['orders_by_hub'].each do |hub, orders|
+                        %li= "#{hub.capitalize}: #{orders} orders"
 
               .col
                 %u.strong Items by Vendor
