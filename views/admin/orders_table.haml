@@ -58,6 +58,8 @@
                   .row
                     %u.strong.w-100 Orders by Pickup Hub
                     %ul.orders-by-pickup-hub
+                      - # TODO: safe evaluation needed cause of old name of herbie hub
+                      - # probably easiest is to manually edit the csv's and update name
                       - summary['orders_by_hub'].each do |hub, orders|
                         %li= "#{hub&.capitalize}: #{orders} orders"
 
